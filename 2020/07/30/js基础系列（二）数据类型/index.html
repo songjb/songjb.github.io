@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="渣渣宋">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="js数据类型有七种，分为基本类型和引用类型 基本类型：string、boolean、number、undefined、null、symbol 引用类型（也叫复杂类型）：Object 引用类型中又可分为：狭义的object、function、array、Date、RegExp等1、数据类型检测手段由于js是松散的，所以需要方法来判断给定值的数据类型，目前有三种方法 1）typeof typeof &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（二）数据类型">
+<meta property="og:url" content="http://yoursite.com/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
 <meta property="og:site_name" content="渣渣宋">
+<meta property="og:description" content="js数据类型有七种，分为基本类型和引用类型 基本类型：string、boolean、number、undefined、null、symbol 引用类型（也叫复杂类型）：Object 引用类型中又可分为：狭义的object、function、array、Date、RegExp等1、数据类型检测手段由于js是松散的，所以需要方法来判断给定值的数据类型，目前有三种方法 1）typeof typeof &amp;">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-29T23:36:29.318Z">
+<meta property="article:modified_time" content="2020-07-29T23:41:00.379Z">
 <meta property="article:author" content="宋进波">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>渣渣宋</title>
+  <title>js基础系列（二）数据类型 | 渣渣宋</title>
   
 
 
@@ -139,74 +143,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">js基础系列（三）内存空间</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-30 07:42:34 / 修改时间：08:22:57" itemprop="dateCreated datePublished" datetime="2020-07-30T07:42:34+08:00">2020-07-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本来想写引用类型，但是在过js高级程序设计第四章的时候觉得还是要写这一章。首先先要了解三种基本的数据结构：队列、栈、堆</p>
-<h4 id="1、队列"><a href="#1、队列" class="headerlink" title="1、队列"></a>1、队列</h4><pre><code>队列是一种先进先出（FIFO）的数据结构，如下图，就像过火车站安检一样，大家排好队，排在前面的先走，后面的后走，这个图已经很清晰了</code></pre><p><img src="2.jpg" alt=""><br><img src="/img/js3/2.jpg" alt=""></p>
-<h4 id="2、栈"><a href="#2、栈" class="headerlink" title="2、栈"></a>2、栈</h4><pre><code>队列是一种先进后出（LIFO）的数据结构，如下图，就像一个盒子里放入的乒乓球，最后放进去的5号球，可以最先拿到，第一个放进去的1号球，只有等上面那完了才能取到。</code></pre><h4 id="3、堆"><a href="#3、堆" class="headerlink" title="3、堆"></a>3、堆</h4><pre><code>堆就是用数组实现的二叉树。堆的存取和书架类似，书架上有一排排书，如果我想取某一本书，只需要知道书名即可，而不用像栈和队列那样需要排队。</code></pre><h4 id="3、基本类型存储"><a href="#3、基本类型存储" class="headerlink" title="3、基本类型存储"></a>3、基本类型存储</h4><pre><code>基本数据类型保存在栈内存中。举个例子
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let a &#x3D; 20;</span><br><span class="line">let b &#x3D; a;</span><br><span class="line">b &#x3D; 30;</span><br></pre></td></tr></table></figure>
-从图中可以看出，用a来初始化b时，b中也保存了20，但b中的20和a中的20完全独立，然后任何对a和b进行操作都不会相互影响。</code></pre><h4 id="4、引用类型存储"><a href="#4、引用类型存储" class="headerlink" title="4、引用类型存储"></a>4、引用类型存储</h4><pre><code>引用类型因为数据不是固定的，所以在栈中的引用类型存储的是一个地址，这个地址是固定的，指向堆中的保存的对象。看下面这个图
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const m &#x3D; &#123; a: 10, b: 20 &#125;</span><br><span class="line">const n &#x3D; m;</span><br><span class="line">n.a &#x3D; 15;</span><br></pre></td></tr></table></figure>
-当m赋值给n时，在栈中只是把这个对象的地址给m，这时m和n都指向了这个对象</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -222,10 +162,9 @@
       <meta itemprop="name" content="渣渣宋">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">js基础系列（二）数据类型</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（二）数据类型
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -249,7 +188,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>js数据类型有七种，分为基本类型和引用类型</p>
+        <p>js数据类型有七种，分为基本类型和引用类型</p>
 <pre><code>基本类型：string、boolean、number、undefined、null、symbol
 引用类型（也叫复杂类型）：Object
 引用类型中又可分为：狭义的object、function、array、Date、RegExp等</code></pre><h4 id="1、数据类型检测手段"><a href="#1、数据类型检测手段" class="headerlink" title="1、数据类型检测手段"></a>1、数据类型检测手段</h4><p>由于js是松散的，所以需要方法来判断给定值的数据类型，目前有三种方法</p>
@@ -322,165 +261,33 @@ parseFloat()与 parseInt()的区别是parseFloat第一个小数点有效</code><
 </ul>
 <h4 id="6、symbol类型"><a href="#6、symbol类型" class="headerlink" title="6、symbol类型"></a>6、symbol类型</h4><p>symbol表示独一无二的值，从根本上防止属性名的冲突。其中的细节请参考阮一峰老师的ES6入门</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/25/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%98%E9%87%8F/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/25/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">js基础系列（一）变量</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-25 18:32:30" itemprop="dateCreated datePublished" datetime="2020-07-25T18:32:30+08:00">2020-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-30 07:35:03" itemprop="dateModified" datetime="2020-07-30T07:35:03+08:00">2020-07-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>js是松散类型的，即可以保存任何变量，通过定义变量有四种方式：   </p>
-<h4 id="1、var。通过var来定义变量"><a href="#1、var。通过var来定义变量" class="headerlink" title="1、var。通过var来定义变量"></a>1、var。通过var来定义变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; &#39;小宋&#39;</span><br><span class="line">a &#x2F;&#x2F; 小宋</span><br></pre></td></tr></table></figure>
-<p>如果是在函数中定义，那该变量就是函数作用域中的变量，该变量在函数退出后销毁。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    var b &#x3D; &#39;hello&#39;</span><br><span class="line">    console.log(b)</span><br><span class="line">&#125;</span><br><span class="line">a() &#x2F;&#x2F; helo</span><br><span class="line">console.log(b) &#x2F;&#x2F; b is not defined</span><br></pre></td></tr></table></figure>
-<h4 id="2、直接赋值-平时不要使用，但有时笔试会挖坑"><a href="#2、直接赋值-平时不要使用，但有时笔试会挖坑" class="headerlink" title="2、直接赋值(平时不要使用，但有时笔试会挖坑)"></a>2、直接赋值(平时不要使用，但有时笔试会挖坑)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    b &#x3D; &#39;hello&#39;</span><br><span class="line">    console.log(b)</span><br><span class="line">&#125;</span><br><span class="line">a() &#x2F;&#x2F; hello</span><br><span class="line">console.log(b) &#x2F;&#x2F; hello</span><br></pre></td></tr></table></figure>
-<h4 id="3、let和const与var的区别"><a href="#3、let和const与var的区别" class="headerlink" title="3、let和const与var的区别"></a>3、let和const与var的区别</h4><p>let和const是在ES6中提出的，和var最大的区别是let和const会产生块级作用域。在js中有全局作用域和函数作用域（eval几乎不用，就不考虑了），没有块级作用域。let和const实际上为js增加了块级作用域。更多例子和细节请参考阮一峰老师的<a href="https://es6.ruanyifeng.com/#docs/let" target="_blank" rel="noopener">ECMAScript6入门</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 大括号</span><br><span class="line">&#123;</span><br><span class="line">    let a &#x3D; &#39;hello&#39;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; if语句</span><br><span class="line">if (true) &#123;</span><br><span class="line">    const a &#x3D; &#39;hello&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还有个区别可能好多人都没注意，看下面这个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (true) &#123;</span><br><span class="line">    console.log(bb)  &#x2F;&#x2F; undefined</span><br><span class="line">    var bb &#x3D; &#39;bb&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (true) &#123;</span><br><span class="line">    console.log(aa)  &#x2F;&#x2F; Cannot access &#39;aa&#39; before initialization</span><br><span class="line">    let aa &#x3D; &#39;aa&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为什么这打印的不一样？<br>是因为在第一段代码中，var会进行变量提升，其执行顺序其实是这样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (true) &#123;</span><br><span class="line">    var bb &#x2F;&#x2F; 在创建过程中，找到每一个变量声明，为其添加属性值undefined，所以下面打印出来是undefined</span><br><span class="line">    console.log(bb)</span><br><span class="line">    bb &#x3D; &#39;bb&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在第二段代码中，执行顺序一样，也会进行变量提升，但是在提升后却没有添加属性值undefined，所有报错说没有初始化。</p>
-<h4 id="4、let和const的区别"><a href="#4、let和const的区别" class="headerlink" title="4、let和const的区别"></a>4、let和const的区别</h4><p>阮一峰老师已经说的很详细了。那在平时项目中用的时候，除非是定义基本数据类型，其它的都是用const，因为这时候const保存的是一个指针，这个指针指向的存贮值内存地址。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 定义对象</span><br><span class="line">const a &#x3D; &#123;</span><br><span class="line">    age： &#39;18&#39;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 定义数组</span><br><span class="line">const b &#x3D; [1, 2, 3]</span><br><span class="line">&#x2F;&#x2F; 定义函数</span><br><span class="line">const fun &#x3D; () &#x3D;&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/25/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%98%E9%87%8F/" rel="prev" title="js基础系列（一）变量">
+      <i class="fa fa-chevron-left"></i> js基础系列（一）变量
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="next" title="js基础系列（三）内存空间">
+      js基础系列（三）内存空间 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/25/%E6%84%9F%E6%82%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/25/%E6%84%9F%E6%82%9F/" class="post-title-link" itemprop="url">最近面试总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-25 18:21:46" itemprop="dateCreated datePublished" datetime="2020-07-25T18:21:46+08:00">2020-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-26 17:46:57" itemprop="dateModified" datetime="2020-07-26T17:46:57+08:00">2020-07-26</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近参加了一些面试，总体效果非常差，甚至有个面试官最后说，你先把基础打牢了再去面试。。。自己总结了下</p>
-<p>1、我的js基础没有成体系，总是一块一块的，所以面试的时候感觉非常糟糕。这个我需要整理js基础，由点到线成面。<br>2、css同样如此。<br>4、react知其然不知所以然，react相关的也只是停留在会用，比如redux，需要深入的理解。<br>5、没有自己的东西，面试之前总会抓瞎，像没头的苍蝇各种blog、官网乱看，所以我建了blog。</p>
-<p>今年我会写三个系列，js基础系列、css基础系列、react理解加实战系列</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -533,6 +340,7 @@ parseFloat()与 parseInt()的区别是parseFloat第一个小数点有效</code><
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、数据类型检测手段"><span class="nav-number">1.</span> <span class="nav-text">1、数据类型检测手段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、string类型"><span class="nav-number">2.</span> <span class="nav-text">2、string类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、boolean类型"><span class="nav-number">3.</span> <span class="nav-text">3、boolean类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、number类型"><span class="nav-number">4.</span> <span class="nav-text">4、number类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、undefined和null类型"><span class="nav-number">5.</span> <span class="nav-text">5、undefined和null类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、symbol类型"><span class="nav-number">6.</span> <span class="nav-text">6、symbol类型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
