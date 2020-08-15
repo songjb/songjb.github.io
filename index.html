@@ -21,9 +21,9 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="渣渣宋">
+<meta property="og:title" content="铁马书生">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="渣渣宋">
+<meta property="og:site_name" content="铁马书生">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="宋进波">
 <meta name="twitter:card" content="summary">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>渣渣宋</title>
+  <title>铁马书生</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">渣渣宋</h1>
+      <h1 class="site-title">铁马书生</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -145,6 +145,722 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E9%97%AD%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E9%97%AD%E5%8C%85/" class="post-title-link" itemprop="url">js基础系列（十二）闭包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-15 23:17:55 / 修改时间：23:20:07" itemprop="dateCreated datePublished" datetime="2020-08-15T23:17:55+08:00">2020-08-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>闭包是一种特殊的对象。</p>
+<p>它由两部分组成。执行上下文(代号A)，以及在该执行上下文中创建的函数（代号B）。</p>
+<p>当B执行时，如果访问了A中变量对象中的值，那么闭包就会产生。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123;</span><br><span class="line">  let a &#x3D; 20</span><br><span class="line">  let b &#x3D; 30</span><br><span class="line">  function bar() &#123;</span><br><span class="line">    return a + b</span><br><span class="line">  &#125;</span><br><span class="line">  return bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const bar &#x3D; foo()</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+<p>上面的例子，首先有执行上下文foo，在foo中定义了函数bar，而通过对外返回bar的方式让bar得以执行。当bar执行时，访问了foo内部的变量a，b。因此这个时候闭包产生。</p>
+<p>再看一个模块化封装的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;定义一个模块</span><br><span class="line">function module(n) &#123;</span><br><span class="line">  let name &#x3D; n   &#x2F;&#x2F; 私有属性</span><br><span class="line">  function getModuleName() &#123;  &#x2F;&#x2F; 私有方法</span><br><span class="line">    return name</span><br><span class="line">  &#125;</span><br><span class="line">  function someMethod() &#123;  &#x2F;&#x2F; 私有方法</span><br><span class="line">    console.log(&#39;coffe1891&#39;)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 以一个对象的形式返回</span><br><span class="line">  return &#123;</span><br><span class="line">    getModuleName: getModuleName,</span><br><span class="line">    getXXX: someMethod</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myapp &#x3D; module(&#39;myModule&#39;)  &#x2F;&#x2F; 定义一个模块</span><br><span class="line">console.log(myapp.getModuleName())  &#x2F;&#x2F; myModule</span><br><span class="line">console.log(myapp.getXXX())  &#x2F;&#x2F; coffe1891</span><br></pre></td></tr></table></figure>
+
+<p>函数的执行上下文，在执行完毕之后，其占用的内存空间很快就会被垃圾回收器释放。可是闭包的存在，会阻止这一过程。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="post-title-link" itemprop="url">js基础系列（十一）执行上下文生命周期</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-15 23:02:04 / 修改时间：23:19:09" itemprop="dateCreated datePublished" datetime="2020-08-15T23:02:04+08:00">2020-08-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>当运行一个函数时，执行上下文会被创建，执行上下文的生命周期分为两部分：创建阶段和代码执行阶段。</p>
+<ul>
+<li>创建阶段：执行上下文会分别创建变量对象，建立作用域链，以及确定this指向。</li>
+<li>代码执行阶段：会完成变量赋值，函数引用，以及执行其他代码。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/1.png" alt></li>
+</ul>
+<h3 id="1、变量对象（Variable-Object）"><a href="#1、变量对象（Variable-Object）" class="headerlink" title="1、变量对象（Variable Object）"></a>1、变量对象（Variable Object）</h3><p>变量对象的创建，依次经历了以下几个过程。</p>
+<h5 id="（1）建立arguments对象：检查当前上下文中的参数，建立该对象下的属性与属性值。"><a href="#（1）建立arguments对象：检查当前上下文中的参数，建立该对象下的属性与属性值。" class="headerlink" title="（1）建立arguments对象：检查当前上下文中的参数，建立该对象下的属性与属性值。"></a>（1）建立arguments对象：检查当前上下文中的参数，建立该对象下的属性与属性值。</h5><h5 id="（2）检查当前上下文的函数声明"><a href="#（2）检查当前上下文的函数声明" class="headerlink" title="（2）检查当前上下文的函数声明"></a>（2）检查当前上下文的函数声明</h5><p>在变量对象中以函数名建立一个属性，属性值为指向该函数所在内存地址的引用</p>
+<h5 id="（3）检查当前上下文中的变量声明"><a href="#（3）检查当前上下文中的变量声明" class="headerlink" title="（3）检查当前上下文中的变量声明"></a>（3）检查当前上下文中的变量声明</h5><p>变量对象中以变量名建立一个属性，属性值为undefined<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/2.png" alt></p>
+<h3 id="2、作用域链"><a href="#2、作用域链" class="headerlink" title="2、作用域链"></a>2、作用域链</h3><p>先区分下概念</p>
+<ul>
+<li>作用域：是一套规则，这套规则用来管理JS引擎如何在当前作用域以及嵌套的子作用域中根据标识符名称进行变量查找。</li>
+<li>作用域链：是由当前环境与上层环境的一系列变量对象组成，它保证了当前执行环境对符合访问权限的变量和函数的有序访问。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let a &#x3D; 20</span><br><span class="line"></span><br><span class="line">function test() &#123;</span><br><span class="line">  let b &#x3D; a + 10</span><br><span class="line"></span><br><span class="line">  function innerTest() &#123;</span><br><span class="line">    let c &#x3D; 10</span><br><span class="line">    return b + c</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return innerTest()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test()</span><br><span class="line">&#x2F;&#x2F; 形成的作用域链</span><br><span class="line">&#x2F;&#x2F; AO(innerTest) -&gt; AO(test) -&gt; AO(global)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3、this"><a href="#3、this" class="headerlink" title="3、this"></a>3、this</h3><p>this的指向，是在函数被调用的时候确定的。也就是执行上下文被创建时确定的。</p>
+<p>this的指向判断，分为下面这几种情况</p>
+<h5 id="（1）构造函数与原型方法上的this"><a href="#（1）构造函数与原型方法上的this" class="headerlink" title="（1）构造函数与原型方法上的this"></a>（1）构造函数与原型方法上的this</h5><p>构造函数中的this和原型方法上的this指向是一样的，都是指向新的实例对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function Person(name, age) &#123;</span><br><span class="line">    &#x2F;&#x2F; 这里的this</span><br><span class="line">    this.name &#x3D; name;</span><br><span class="line">    this.age &#x3D; age;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.getName &#x3D; function() &#123;</span><br><span class="line">    &#x2F;&#x2F; 这里的this</span><br><span class="line">    return this.name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 上面的2个this，是同一个，他们都指向新的实例对象p1</span><br><span class="line"></span><br><span class="line">const p1 &#x3D; new Person(&#39;Nick&#39;, 20)</span><br><span class="line">p1.getName()</span><br></pre></td></tr></table></figure>
+<h5 id="（2）函数中的this"><a href="#（2）函数中的this" class="headerlink" title="（2）函数中的this"></a>（2）函数中的this</h5><p>在一个函数上下文中，this由调用者提供，由调用函数的方式来决定。如果调用者函数，被某一个对象所拥有，那么该函数在调用时，内部的this指向该对象。如果函数独立调用，那么该函数内部的this，则指向undefined。但是在非严格模式中，当this指向undefined时，它会被自动指向全局对象。</p>
+<h5 id="（3）全局对象中的this"><a href="#（3）全局对象中的this" class="headerlink" title="（3）全局对象中的this"></a>（3）全局对象中的this</h5><p>函数在浏览器全局环境中被简单调用，非严格模式下this指向window; 在严格模式的情况下就是undefined。</p>
+<h5 id="（4）setTimeout、setInterval中的this"><a href="#（4）setTimeout、setInterval中的this" class="headerlink" title="（4）setTimeout、setInterval中的this"></a>（4）setTimeout、setInterval中的this</h5><p>setTimeout()和setInterval()的函数中的this有些特殊，里面的this默认是window对象。如果不希望是window，可以使用箭头函数。</p>
+<h5 id="（5）使用call，apply，bind显示指定this"><a href="#（5）使用call，apply，bind显示指定this" class="headerlink" title="（5）使用call，apply，bind显示指定this"></a>（5）使用call，apply，bind显示指定this</h5><p>JavaScript内部提供了一种机制，让我们可以自行手动设置this的指向。</p>
+<ul>
+<li><p>call：使用一个指定的this值和若干个指定的参数值的前提下调用某个函数或方法。</p>
+<p>  call的作用： </p>
+<ul>
+<li>1、call 改变了 this 的指向，指向到 foo     </li>
+<li>2、执行bar 函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var foo &#x3D; &#123;</span><br><span class="line">    value: 1</span><br><span class="line">&#125;;</span><br><span class="line">function bar() &#123;</span><br><span class="line">    console.log(this.value);</span><br><span class="line">&#125;</span><br><span class="line">bar.call(foo); &#x2F;&#x2F; 1</span><br><span class="line"></span><br><span class="line">call的重写：（实现思路是先把bar函数变成foo的属性，计算后再删除）</span><br><span class="line"> &#x2F;&#x2F; 实现apply只要把下一行中的...args换成args即可 </span><br><span class="line">function myCall (context, ...args) &#123;</span><br><span class="line">    let ctx &#x3D; context || window  &#x2F;&#x2F; 防止call（null）</span><br><span class="line">    ctx.fn &#x3D; this  &#x2F;&#x2F; 指上面的bar，context指foo</span><br><span class="line">    let res &#x3D; ctx.fn(..args)</span><br><span class="line">    delete ctx.fn</span><br><span class="line">    return res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>apply：它们除了参数略有不同之外，其功能完全一样。call和aplly的第一个参数都是要改变上下文的对象。call的第二个参数是参数列表，apply的第二个参数是数组。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fn.call(obj, arg1, arg2, arg3，...)</span><br><span class="line">fn.apply(obj, [arg1, arg2, arg3，...])</span><br></pre></td></tr></table></figure></li>
+<li><p>bind：bind() 方法会创建一个新函数。当这个新函数被调用时，bind() 的第一个参数将作为它运行时的 this，之后的一序列参数将会在传递的实参前传入作为它的参数。参考<a href="https://coffe1891.gitbook.io/frontend-hard-mode-interview/1/1.2.4" target="_blank" rel="noopener">博客</a>和<a href="https://juejin.im/post/6844903476623835149#heading-6" target="_blank" rel="noopener">冴羽</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> const foo &#x3D; &#123;</span><br><span class="line">    value: 1</span><br><span class="line">&#125;</span><br><span class="line">function bar(name, age) &#123;</span><br><span class="line">    console.log(this.value)</span><br><span class="line">    console.log(name)</span><br><span class="line">    console.log(age)</span><br><span class="line">&#125;</span><br><span class="line">let bindFoo &#x3D; bar.bind(foo, &#39;daisy&#39;)</span><br><span class="line">bindFoo(&#39;18&#39;)</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; daisy</span><br><span class="line">&#x2F;&#x2F; 18</span><br><span class="line">&#x2F;&#x2F; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;手写</span><br><span class="line">Function.prototype.myBild &#x3D; function (context, ...args) &#123;</span><br><span class="line">  const self &#x3D; this  &#x2F;&#x2F; 存储调用函数，即上例中的bar</span><br><span class="line">  function newFunction (...argsTow) &#123;</span><br><span class="line">    &#x2F;&#x2F; 检查this是否是newFunction的实例？也就是检查newFunction是否通过new调用</span><br><span class="line">    let isNew &#x3D; this instanceof newFunction &#x2F;&#x2F; 这里的this指向上例中的bindFoo(&#39;18&#39;)</span><br><span class="line">    &#x2F;&#x2F; new调用就绑定到this上,否则就绑定到传入的context上</span><br><span class="line">    &#x2F;&#x2F; 用call执行调用函数，绑定this的指向，并传递参数。返回执行结果</span><br><span class="line">    self.call(isNew ? this : context, ...args, ...argsTow)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 复制调用函数的prototype给newFunction</span><br><span class="line">  newFunction.prototype &#x3D; Object.create(self.prototype)</span><br><span class="line">  return newFunction</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B9%9D%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B9%9D%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/" class="post-title-link" itemprop="url">js基础系列（九）引用类型之Array</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-15 22:43:42 / 修改时间：22:47:29" itemprop="dateCreated datePublished" datetime="2020-08-15T22:43:42+08:00">2020-08-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1、Array"><a href="#1、Array" class="headerlink" title="1、Array"></a>1、Array</h4><h5 id="1）创建-Array-实例的方式有两种"><a href="#1）创建-Array-实例的方式有两种" class="headerlink" title="1）创建 Array 实例的方式有两种"></a>1）创建 Array 实例的方式有两种</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Array 构造函数</span><br><span class="line">const arr &#x3D; new Array()</span><br><span class="line">const arr &#x3D; new Array(20) &#x2F;&#x2F; 创建 length 值为 20 的数组</span><br><span class="line">const arr &#x3D; new Array(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;) &#x2F;&#x2F; 包含3个字符串值的数组</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 另一种方式是使用数组字面量表示法</span><br><span class="line">const arr &#x3D; []</span><br><span class="line">const arr &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]; &#x2F;&#x2F; 创建一个包含3个字符串的数组</span><br></pre></td></tr></table></figure>
+<h5 id="2）类数组"><a href="#2）类数组" class="headerlink" title="2）类数组"></a>2）类数组</h5><p>本质上，数组属于一种特殊的对象。所以typeof运算符会返回数组的类型是object。且每个数组都有length属性。如果一个对象的所有键名都是正整数或零，并且有length属性，那么这个对象就很像数组，称为类数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const obj &#x3D; &#123;</span><br><span class="line">  0: &#39;a&#39;,</span><br><span class="line">  1: &#39;b&#39;,</span><br><span class="line">  2: &#39;c&#39;,</span><br><span class="line">  length: 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的obj就是一个类数组对象，但并不是数组，因为它们不具备数组特有的方法。类数组根本特征，就是具有length属性。只要有length属性，就可以认为这个对象类似于数组。但是有一个问题，这种length属性不是动态值，不会随着成员的变化而变化。比如为obj添加了一个数字键，length属性不会变。实际中类数组有函数的arguments对象，以及大多数 DOM 元素集，还有字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 类数组转数组ES5</span><br><span class="line">const arr &#x3D; [].slice.call(arrayLike)</span><br><span class="line">&#x2F;&#x2F; 类数组转数组ES6</span><br><span class="line">const arr &#x3D; Array.from(arrayLike)</span><br></pre></td></tr></table></figure>
+<h5 id="3）数组方法"><a href="#3）数组方法" class="headerlink" title="3）数组方法"></a>3）数组方法</h5><ul>
+<li>Array本身的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Array.from() &#x2F;&#x2F; 将类数组和可遍历（iterable）的对象转为数组</span><br><span class="line">Array.isArray() &#x2F;&#x2F; 用于确定传递的值是否是一个 Array，如果值是 Array，则为true; 否则为false。</span><br><span class="line">Array.of() &#x2F;&#x2F; 用于将一组数转为数组</span><br></pre></td></tr></table></figure></li>
+<li>Array的实例方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype.concat() &#x2F;&#x2F; 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。如果数组成员包括对象，concat方法返回当前数组的一个浅拷贝。现在可用扩展运算符替代concat</span><br><span class="line">    const a1 &#x3D; [1, 2]</span><br><span class="line">    const a2 &#x3D; [3, 4]</span><br><span class="line">    const a3 &#x3D; a1.concat(a2) &#x2F;&#x2F; ES5</span><br><span class="line">    const a3 &#x3D; [...a1, ...a2] &#x2F;&#x2F; ES6</span><br><span class="line">Array.prototype.copyWithin(target, start &#x3D; 0, end &#x3D; this.length) &#x2F;&#x2F; 在当前数组内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组。会修改当前数组。</span><br><span class="line">    - target（必需）：从该位置开始替换数据。如果为负值，表示倒数。</span><br><span class="line">    - start（可选）：从该位置开始读取数据，默认为 0。如果为负值，表示从末尾开始计算。</span><br><span class="line">    - end（可选）：到该位置前停止读取数据，默认等于数组长度。如果为负值，表示从末尾开始计算。</span><br><span class="line">    </span><br><span class="line">Array.prototype.entries()</span><br><span class="line">Array.prototype.keys() </span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; entries()，keys()和values()——用于遍历数组，它们都返回一个遍历器对象，配合for...of循环进行遍历，唯一的区别是keys()是对键名的遍历、values()是对键值的遍历，entries()是对键值对的遍历。</span><br><span class="line"></span><br><span class="line">Array.prototype.every() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。所有成员的返回值都是true，整个every方法才返回true，否则返回false。</span><br><span class="line">Array.prototype.some() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。只要一个成员的返回值是true，则整个some方法的返回值就是true，否则返回false。</span><br><span class="line">Array.prototype.map() &#x2F;&#x2F; 将数组的所有成员依次传入参数函数，然后把每一次的执行结果组成一个新数组返回。map方法接受一个函数作为参数。该函数调用时，map方法向它传入三个参数：当前成员、当前位置和数组本身。</span><br><span class="line">Array.prototype.forEach() &#x2F;&#x2F; forEach方法与map方法很相似。但是，forEach方法不返回值，只用来操作数据。forEach方法无法中断执行，总是会将所有成员遍历完。</span><br><span class="line">Array.prototype.filter() &#x2F;&#x2F; 用于过滤数组成员，满足条件的成员组成一个新数组返回。它的参数是一个函数，所有数组成员依次执行该函数，返回结果为true的成员组成一个新数组返回。该方法不会改变原数组。filter方法的参数函数可以接受三个参数：当前成员，当前位置和整个数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.fill() &#x2F;&#x2F; 使用给定值，填充一个数组。fill方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。注意，如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。</span><br><span class="line"></span><br><span class="line">Array.prototype.find() &#x2F;&#x2F; 用于找出第一个符合条件的数组成员。它的参数是一个回调函数，可以接受三个参数，依次为当前的值、当前的位置和原数组。所有数组成员依次执行该回调函数，直到找出第一个返回值为true的成员，然后返回该成员。如果没有符合条件的成员，则返回undefined。</span><br><span class="line">Array.prototype.findIndex() &#x2F;&#x2F; findIndex方法的用法与find方法非常类似，返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回-1。</span><br><span class="line">Array.prototype.indexOf() &#x2F;&#x2F; indexOf方法返回给定元素在数组中第一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.lastIndexOf() &#x2F;&#x2F; lastIndexOf方法返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.includes() &#x2F;&#x2F; 返回一个布尔值，表示某个数组是否包含给定的值。没有该方法之前，我们通常使用数组的indexOf方法，检查是否包含某个值。但这个方法弥补了对NaN误判对缺陷。</span><br><span class="line"></span><br><span class="line">Array.prototype.flat() &#x2F;&#x2F; 用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。参数表示要拉平但层数。</span><br><span class="line">Array.prototype.flatMap() &#x2F;&#x2F; 对原数组的每个成员执行一个函数（相当于执行map()），然后对返回值组成的数组执行flat()方法。该方法返回一个新数组，不改变原数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.reduce() </span><br><span class="line">Array.prototype.reduceRight() &#x2F;&#x2F; reduce方法和reduceRight方法依次处理数组的每个成员，最终累计为一个值。它们的差别是，reduce是从左到右处理（从第一个成员到最后一个成员），reduceRight则是从右到左（从最后一个成员到第一个成员），其他完全一样。这两个方法第一个参数都是一个函数。该函数接受以下四个参数。累积变量，默认为数组的第一个成员</span><br><span class="line"></span><br><span class="line">Array.prototype.join() &#x2F;&#x2F; join()方法以指定参数作为分隔符，将所有数组成员连接为一个字符串返回。如果不提供参数，默认用逗号分隔。</span><br><span class="line"></span><br><span class="line">Array.prototype.push() &#x2F;&#x2F; 用于在数组的末端添加一个或多个元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line">Array.prototype.pop() &#x2F;&#x2F; 用于删除数组的最后一个元素，并返回该元素。注意，该方法会改变原数组。push和pop结合使用，就构成了“后进先出”的栈结构（stack）。</span><br><span class="line">Array.prototype.shift() &#x2F;&#x2F; 用于删除数组的第一个元素，并返回该元素。注意，该方法会改变原数组。push()和shift()结合使用，就构成了“先进先出”的队列结构（queue）。</span><br><span class="line">Array.prototype.unshift() &#x2F;&#x2F; 用于在数组的第一个位置添加元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.reverse() &#x2F;&#x2F; 用于颠倒排列数组元素，返回改变后的数组。注意，该方法将改变原数组</span><br><span class="line">Array.prototype.sort() &#x2F;&#x2F; 对数组成员进行排序，默认是按照字典顺序排序。排序后，原数组将被改变。</span><br><span class="line"></span><br><span class="line">Array.prototype.slice() &#x2F;&#x2F; 用于提取目标数组的一部分，返回一个新数组，原数组不变。它的第一个参数为起始位置（从0开始，会包括在返回的新数组之中），第二个参数为终止位置（但该位置的元素本身不包括在内）。如果省略第二个参数，则一直返回到原数组的最后一个成员。slice()方法的一个重要应用，是将类似数组的对象转为真正的数组。</span><br><span class="line">Array.prototype.splice() &#x2F;&#x2F; 用于删除原数组的一部分成员，并可以在删除的位置添加新的数组成员，返回值是被删除的元素。注意，该方法会改变原数组。第一个参数是删除的起始位置（从0开始），第二个参数是被删除的元素个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。</span><br><span class="line"></span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; valueOf方法是一个所有对象都拥有的方法，表示对该对象求值。不同对象的valueOf方法不尽一致，数组的valueOf方法返回数组本身。</span><br><span class="line"></span><br><span class="line">Array.prototype.toString() &#x2F;&#x2F; toString方法也是对象的通用方法，数组的toString方法返回数组的字符串形式。</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/" class="post-title-link" itemprop="url">js基础系列（十）执行上下文</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-15 22:41:45 / 修改时间：23:19:37" itemprop="dateCreated datePublished" datetime="2020-08-15T22:41:45+08:00">2020-08-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>执行上下文概念非常重要，但我总是理解不透，直到我看了波能反杀老师的<a href="https://www.jianshu.com/p/a6d37c77e8db" target="_blank" rel="noopener">前端基础进阶</a>，醍醐灌顶。</p>
+<p>当代码开始运行时，就会形成执行上下文，执行上下文可以理解为当前代码的执行环境，它会形成一个作用域。目前当作用域有三种（不包括ES6的块级作用域）</p>
+<ul>
+<li>全局环境：JavaScript代码运行起来会首先进入该环境</li>
+<li>函数环境：当函数被调用执行时，会进入当前函数中执行代码</li>
+<li>eval（不建议使用，可忽略）</li>
+</ul>
+<p>当一段程序运行时，势必会产生很多的执行上下文，js引擎会以栈的方式来处理，这个栈称<strong>函数调用栈</strong>。栈底永远都是全局上下文，而栈顶就是当前正在执行的上下文。</p>
+<h4 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">let color &#x3D; &#39;blue&#39;</span><br><span class="line"></span><br><span class="line">function changeColor() &#123;</span><br><span class="line">  let anotherColor &#x3D; &#39;red&#39;</span><br><span class="line"></span><br><span class="line">  function swapColors() &#123;</span><br><span class="line">    let tempColor &#x3D; anotherColor</span><br><span class="line">    anotherColor &#x3D; color</span><br><span class="line">    color &#x3D; tempColor</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  swapColors()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">changeColor()</span><br></pre></td></tr></table></figure>
+<p>用ECStack来表示存贮执行上下文的栈，第一步，把全局上下文入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/1.png" alt><br>然后js代码开始运行，当执行到changeColor()函数的时候，生成changeColor的执行上下文，然后把它压入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/2.png" alt><br>changeColor的执行上下文入栈后，开始执行开始changeColor里的代码，遇到swapColors()，创建swapColors的执行上下文，押入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/3.png" alt><br>swapColors执行，发现不需要生成其他的执行上下文，完毕后就会出栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/4.png" alt><br>swapColors出栈后，就会执行swapColors代码，执行完毕后出栈。这样，ECStack中就只剩下全局上下文了。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/5.png" alt><br>全局上下文在浏览器窗口关闭后出栈。</p>
+<h4 id="这是一个闭包的🌰"><a href="#这是一个闭包的🌰" class="headerlink" title="这是一个闭包的🌰"></a>这是一个闭包的🌰</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function f1() &#123;</span><br><span class="line">  var n &#x3D; 999</span><br><span class="line">  function f2() &#123;</span><br><span class="line">    alert(n)</span><br><span class="line">  &#125;</span><br><span class="line">  return f2</span><br><span class="line">&#125;</span><br><span class="line">const result &#x3D; f1()</span><br><span class="line">result() &#x2F;&#x2F; 999</span><br></pre></td></tr></table></figure>
+<p>因为f1中的函数f2在f1的可执行代码中，并没有被调用执行，因此执行f1时，f2不会创建新的上下文，而直到result执行时，才创建了一个新的。具体演变过程如下。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/6.png" alt></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AB%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BFunction%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AB%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BFunction%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">js基础系列（八）引用类型之Function对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:49:33 / 修改时间：22:50:32" itemprop="dateCreated datePublished" datetime="2020-08-06T22:49:33+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>函数是js世界里第一等公民，函数带有一个特别重要的绝招——定义作用域，当然了ES6之后就有块级作用域。另外函数是对象，函数名是指针。</p>
+<h5 id="1）没有重载"><a href="#1）没有重载" class="headerlink" title="1）没有重载"></a>1）没有重载</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function addSomeNumber(num)&#123;</span><br><span class="line">	return num + 100</span><br><span class="line">&#125;</span><br><span class="line">function addSomeNumber(num) &#123;</span><br><span class="line">    return num + 200</span><br><span class="line">&#125;</span><br><span class="line">const result &#x3D; addSomeNumber(100) &#x2F;&#x2F; 300</span><br></pre></td></tr></table></figure>
+<p>例子中声明了两个同名函数，而结果则是后面的函数覆盖了前面的函数。在创建第二个函数时，实际上覆盖了引用第一个函数的变量 addSomeNumber。</p>
+<h5 id="2）函数常见的四种形态"><a href="#2）函数常见的四种形态" class="headerlink" title="2）函数常见的四种形态"></a>2）函数常见的四种形态</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 函数的声明形态</span><br><span class="line">function func() &#123;</span><br><span class="line">    console.log(&quot;函数的声明形态&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 函数的表达式形态 之一</span><br><span class="line">const func0 &#x3D; function() &#123;</span><br><span class="line">    console.log(&quot;函数的表达式形态&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 函数的表达式形态 之二</span><br><span class="line">(function func1() &#123;&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 函数的嵌套形态</span><br><span class="line">const func2 &#x3D; function() &#123;</span><br><span class="line">    console.log(&quot;函数的嵌套形态&quot;)</span><br><span class="line">    let func3 &#x3D; function() &#123;</span><br><span class="line">        console.log(&quot;func2嵌套在func1里&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    func3()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 函数的闭包形态</span><br><span class="line">let func4 &#x3D; function() &#123;</span><br><span class="line">    var a &#x3D; &#39;func4&#39;</span><br><span class="line">    return function() &#123;</span><br><span class="line">        console.log(&#39;我是以闭包形态存在的函数:&#39; + a)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 所有的函数都通过一对括号&#39;()&#39;调用</span><br><span class="line">func()</span><br><span class="line">func0()</span><br><span class="line">func1()</span><br><span class="line">func2()</span><br><span class="line">func4()()</span><br></pre></td></tr></table></figure>
+
+<h5 id="3）函数声明提升"><a href="#3）函数声明提升" class="headerlink" title="3）函数声明提升"></a>3）函数声明提升</h5><p>只有声明形态的函数，才具有提升的特性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">console.log(func0) &#x2F;&#x2F; func0() &#123;return 0&#125;</span><br><span class="line">console.log(func1) &#x2F;&#x2F; undefined</span><br><span class="line">&#x2F;&#x2F;函数的声明形态</span><br><span class="line">function func0() &#123;</span><br><span class="line">  return 0</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;函数的表达式形态</span><br><span class="line">var func1 &#x3D; function() &#123;</span><br><span class="line">  return 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4）立即执行函数"><a href="#4）立即执行函数" class="headerlink" title="4）立即执行函数"></a>4）立即执行函数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(function() &#123;</span><br><span class="line">    console.log(&#39;我是立即运行的匿名函数&#39;)</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">(function() &#123;</span><br><span class="line">    console.log(&#39;我也是立即运行的匿名函数&#39;)</span><br><span class="line">&#125;())</span><br></pre></td></tr></table></figure>
+<h5 id="5）箭头函数"><a href="#5）箭头函数" class="headerlink" title="5）箭头函数"></a>5）箭头函数</h5><p>箭头函数是ES6但语法糖之一。使用时需要注意</p>
+<ul>
+<li>函数体内的this对象，就是定义时所在的对象，是固定的，而不是使用时所在的对象。<br>  this指向的固定化，并不是因为箭头函数内部有绑定this的机制，实际原因是箭头函数根本没有自己的this，导致内部的this就是外层代码块的this。正是因为它没有this，所以也就不能用作构造函数。</li>
+<li>不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%83%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BDate%E5%AF%B9%E8%B1%A1%E3%80%81Math%E5%AF%B9%E8%B1%A1%E3%80%81RegExp%E5%AF%B9%E8%B1%A1%E3%80%81JSON%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%83%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BDate%E5%AF%B9%E8%B1%A1%E3%80%81Math%E5%AF%B9%E8%B1%A1%E3%80%81RegExp%E5%AF%B9%E8%B1%A1%E3%80%81JSON%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">js基础系列（七）引用类型之Date对象、Math对象、RegExp对象、JSON对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:47:32 / 修改时间：23:01:31" itemprop="dateCreated datePublished" datetime="2020-08-06T22:47:32+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1、Date对象"><a href="#1、Date对象" class="headerlink" title="1、Date对象"></a>1、Date对象</h4><h5 id="1）Date用法"><a href="#1）Date用法" class="headerlink" title="1）Date用法"></a>1）Date用法</h5><p>Date对象是 JavaScript 原生的时间库。Date对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Date()</span><br><span class="line">&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br></pre></td></tr></table></figure>
+<p>Date还可以当作构造函数使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const time &#x3D; new Date()</span><br><span class="line">&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br></pre></td></tr></table></figure>
+<h5 id="2）静态方法"><a href="#2）静态方法" class="headerlink" title="2）静态方法"></a>2）静态方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Date.now() &#x2F;&#x2F; 1596615142604 &#x2F;&#x2F; 返回当前时间距离时间零点（1970年1月1日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以1000。</span><br><span class="line">Date.parse() &#x2F;&#x2F; 用来解析日期字符串，返回该时间距离时间零点（1970年1月1日 00:00:00）的毫秒数。</span><br><span class="line">Date.UTC() &#x2F;&#x2F; 接受年、月、日等变量作为参数，返回该时间距离时间零点（1970年1月1日 00:00:00 UTC）的毫秒数。</span><br></pre></td></tr></table></figure>
+<h5 id="3）实例方法"><a href="#3）实例方法" class="headerlink" title="3）实例方法"></a>3）实例方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Date.prototype.valueOf() &#x2F;&#x2F; 返回实例对象距离时间零点（1970年1月1日00:00:00 UTC）对应的毫秒数，该方法等同于getTime方法。</span><br><span class="line">    var d &#x3D; new Date()</span><br><span class="line">    d.valueOf() &#x2F;&#x2F; 1596615142604</span><br><span class="line">    d.getTime() &#x2F;&#x2F; 1596615142604</span><br><span class="line">Date.prototype.toString() &#x2F;&#x2F; 返回一个完整的日期字符串</span><br><span class="line">	  const time &#x3D; new Date()</span><br><span class="line">    time.toString()</span><br><span class="line">	  &#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br><span class="line">Date.prototype.toUTCString() &#x2F;&#x2F; 返回对应的 UTC 时间，也就是比北京时间晚8个小时。</span><br><span class="line">Date.prototype.toISOString() &#x2F;&#x2F; 返回对应时间的 ISO8601 写法。</span><br><span class="line">Date.prototype.toJSON() &#x2F;&#x2F; 返回一个符合 JSON 格式的 ISO 日期字符串，与toISOString方法的返回结果完全相同。</span><br><span class="line">Date.prototype.toDateString() &#x2F;&#x2F; 返回日期字符串（不含小时、分和秒）</span><br><span class="line">Date.prototype.toTimeString() &#x2F;&#x2F; 返回时间字符串（不含年月日）</span><br><span class="line"></span><br><span class="line">Date.prototype.toLocaleString() &#x2F;&#x2F; 返回完整的本地时间</span><br><span class="line">Date.prototype.toLocaleDateString() &#x2F;&#x2F; 返回本地日期（不含小时、分和秒）</span><br><span class="line">Date.prototype.toLocaleTimeString() &#x2F;&#x2F; 返回本地时间（不含年月日）</span><br><span class="line">	  const time &#x3D; new Date(2020, 7, 5)</span><br><span class="line">    time.toLocaleString() &#x2F;&#x2F; 2020&#x2F;8&#x2F;5 上午12:00:00</span><br><span class="line">    time.toLocaleDateString() &#x2F;&#x2F; 2020&#x2F;8&#x2F;5</span><br><span class="line">    time.toLocaleTimeString() &#x2F;&#x2F; 上午12:00:00</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Date.prototype.getTime()：返回实例距离1970年1月1日00:00:00的毫秒数，等同于valueOf方法。</span><br><span class="line">Date.prototype.getDate()：返回实例对象对应每个月的几号（从1开始）。</span><br><span class="line">Date.prototype.getDay()：返回星期几，星期日为0，星期一为1，以此类推。</span><br><span class="line">Date.prototype.getFullYear()：返回四位的年份。</span><br><span class="line">Date.prototype.getMonth()：返回月份（0表示1月，11表示12月）。</span><br><span class="line">Date.prototype.getHours()：返回小时（0-23）。</span><br><span class="line">Date.prototype.getMilliseconds()：返回毫秒（0-999）。</span><br><span class="line">Date.prototype.getMinutes()：返回分钟（0-59）。</span><br><span class="line">Date.prototype.getSeconds()：返回秒（0-59）。</span><br><span class="line">Date.prototype.getTimezoneOffset()：返回当前时间与 UTC 的时区差异，以分钟表示，返回结果考虑到了夏令时因素。</span><br><span class="line"></span><br><span class="line">Date.prototype.setDate(date)：设置实例对象对应的每个月的几号（1-31），返回改变后毫秒时间戳。</span><br><span class="line">Date.prototype.setFullYear(year [, month, date])：设置四位年份。</span><br><span class="line">Date.prototype.setHours(hour [, min, sec, ms])：设置小时（0-23）。</span><br><span class="line">Date.prototype.setMilliseconds()：设置毫秒（0-999）。</span><br><span class="line">Date.prototype.setMinutes(min [, sec, ms])：设置分钟（0-59）。</span><br><span class="line">Date.prototype.setMonth(month [, date])：设置月份（0-11）。</span><br><span class="line">Date.prototype.setSeconds(sec [, ms])：设置秒（0-59）。</span><br><span class="line">Date.prototype.setTime(milliseconds)：设置毫秒时间戳。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、Math对象"><a href="#2、Math对象" class="headerlink" title="2、Math对象"></a>2、Math对象</h4><h5 id="1）静态属性"><a href="#1）静态属性" class="headerlink" title="1）静态属性"></a>1）静态属性</h5><p>Math对象的静态属性，提供以下一些数学常数。这些属性都是只读的，不能修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Math.E：常数e。</span><br><span class="line">Math.LN2：2 的自然对数。</span><br><span class="line">Math.LN10：10 的自然对数。</span><br><span class="line">Math.LOG2E：以 2 为底的e的对数。</span><br><span class="line">Math.LOG10E：以 10 为底的e的对数。</span><br><span class="line">Math.PI：常数π。</span><br><span class="line">Math.SQRT1_2：0.5 的平方根。</span><br><span class="line">Math.SQRT2：2 的平方根。</span><br></pre></td></tr></table></figure>
+<h5 id="2）静态方法-1"><a href="#2）静态方法-1" class="headerlink" title="2）静态方法"></a>2）静态方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Math.abs()：绝对值</span><br><span class="line">Math.ceil()：向上取整。返回大于参数值的最小整数（天花板值）</span><br><span class="line">Math.floor()：向下取整。返回小于参数值的最大整数（地板值）</span><br><span class="line">Math.max()：最大值</span><br><span class="line">Math.min()：最小值</span><br><span class="line">Math.pow()：幂运算</span><br><span class="line">Math.sqrt()：平方根</span><br><span class="line">Math.log()：自然对数</span><br><span class="line">Math.exp()：e的指数</span><br><span class="line">Math.round()：四舍五入</span><br><span class="line">Math.random()：返回0到1之间的一个伪随机数，可能等于0，但是一定小于1。</span><br></pre></td></tr></table></figure>
+<h5 id="3）三角函数方法"><a href="#3）三角函数方法" class="headerlink" title="3）三角函数方法"></a>3）三角函数方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Math.sin()：返回参数的正弦（参数为弧度值）</span><br><span class="line">Math.cos()：返回参数的余弦（参数为弧度值）</span><br><span class="line">Math.tan()：返回参数的正切（参数为弧度值）</span><br><span class="line">Math.asin()：返回参数的反正弦（返回值为弧度值）</span><br><span class="line">Math.acos()：返回参数的反余弦（返回值为弧度值）</span><br><span class="line">Math.atan()：返回参数的反正切（返回值为弧度值）</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、RegExp对象"><a href="#3、RegExp对象" class="headerlink" title="3、RegExp对象"></a>3、RegExp对象</h4><h5 id="1）创建"><a href="#1）创建" class="headerlink" title="1）创建"></a>1）创建</h5><p>表达式有两种方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const regex &#x3D; &#x2F;xyz&#x2F;  &#x2F;&#x2F; 一种是使用字面量，以斜杠表示开始和结束</span><br><span class="line">const regex &#x3D; new RegExp(&#39;xyz&#39;)  &#x2F;&#x2F; 另一种是使用RegExp构造函数</span><br></pre></td></tr></table></figure>
+<h5 id="2）正则表达式的标志"><a href="#2）正则表达式的标志" class="headerlink" title="2）正则表达式的标志"></a>2）正则表达式的标志</h5><ul>
+<li><p>g:表示全局(global)模式，即模式将被应用于所有字符串，而非在发现第一个匹配项时立即停止</p>
+</li>
+<li><p>i:表示不区分大小写(case-insensitive)模式，即在确定匹配项时忽略模式与字符串的大小写</p>
+</li>
+<li><p>m:表示多行(multiline)模式，即在到达一行文本末尾时还会继续查找下一行中是否存在与模<br>式匹配的项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 匹配字符串中所有&quot;at&quot;的实例</span><br><span class="line">const pattern1 &#x3D; &#x2F;at&#x2F;g </span><br><span class="line">&#x2F;&#x2F; 匹配第一个&quot;bat&quot;或&quot;cat&quot;，不区分大小写</span><br><span class="line">const pattern2 &#x3D; &#x2F;[bc]at&#x2F;i</span><br><span class="line">&#x2F;&#x2F; 匹配所有以&quot;at&quot;结尾的 3 个字符的组合，不区分大小写</span><br><span class="line">const pattern3 &#x3D; &#x2F;.at&#x2F;gi</span><br></pre></td></tr></table></figure>
+<h5 id="3）实例属性"><a href="#3）实例属性" class="headerlink" title="3）实例属性"></a>3）实例属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> global:布尔值，表示是否设置了 g 标志。</span><br><span class="line"> ignoreCase:布尔值，表示是否设置了 i 标志。</span><br><span class="line"> lastIndex:整数，表示开始搜索下一个匹配项的字符位置，从 0 算起。</span><br><span class="line"> multiline:布尔值，表示是否设置了 m 标志。</span><br><span class="line"> source:正则表达式的字符串表示，按照字面量形式而非传入构造函数中的字符串模式返回。</span><br></pre></td></tr></table></figure>
+<h5 id="4）实例方法"><a href="#4）实例方法" class="headerlink" title="4）实例方法"></a>4）实例方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RegExp.prototype.test() &#x2F;&#x2F; test方法返回一个布尔值，表示当前模式是否能匹配参数字符串。</span><br><span class="line">	&#x2F;cat&#x2F;.test(&#39;cats and dogs&#39;) &#x2F;&#x2F; true</span><br><span class="line">RegExp.prototype.exec() &#x2F;&#x2F; 用来返回匹配结果。如果发现匹配，就返回一个数组，成员是匹配成功的子字符串，否则返回null。exec包含两个额外的属性:index 和 input。其中，index 表示匹配 项在字符串中的位置，而 input 表示应用正则表达式的字符串。</span><br></pre></td></tr></table></figure>
+<h5 id="5）匹配规则"><a href="#5）匹配规则" class="headerlink" title="5）匹配规则"></a>5）匹配规则</h5></li>
+<li><p>/abc/  &gt;&gt; 字面量字符，这个就是匹配abc</p>
+</li>
+<li><p>.  &gt;&gt; 匹配除回车（\r）、换行(\n) 、行分隔符（\u2028）和段分隔符（\u2029）以外的所有字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;c.t&#x2F;  &gt;&gt;c.t匹配c和t之间包含任意一个字符的情况，只要这三个字符在同一行，比如cat、c2t、c-t等等，但是不匹配coot。</span><br></pre></td></tr></table></figure></li>
+<li><p>^ &gt;&gt; 表示字符串的开始位置</p>
+</li>
+<li><p>$ &gt;&gt; 表示字符串的结束位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; test必须出现在开始位置</span><br><span class="line">&#x2F;^test&#x2F;.test(&#39;test123&#39;) &#x2F;&#x2F; true</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; test必须出现在结束位置</span><br><span class="line">&#x2F;test$&#x2F;.test(&#39;new test&#39;) &#x2F;&#x2F; true</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 从开始位置到结束位置只有test</span><br><span class="line">&#x2F;^test$&#x2F;.test(&#39;test&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;^test$&#x2F;.test(&#39;test test&#39;) &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure></li>
+<li><p>| &gt;&gt; 中表示“或关系”（OR），即cat|dog表示匹配cat或dog。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;11|22&#x2F;.test(&#39;911&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;fred|barney|betty&#x2F; &#x2F;&#x2F; 匹配fred、barney、betty之中的一个</span><br></pre></td></tr></table></figure></li>
+<li><p>\ &gt;&gt; 如果要匹配它们本身，就需要在它们前面要加上反斜杠。比如要匹配+，就要写成+。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;1+1&#x2F;.test(&#39;1+1&#39;) &#x2F;&#x2F; false</span><br><span class="line">&#x2F;1\+1&#x2F;.test(&#39;1+1&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li><p>字符类 &gt;&gt; 表示有一系列字符可供选择，只要匹配其中一个就可以了。所有可供选择的字符都放在方括号内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[xyz] &gt;&gt; 表示x、y、z之中任选一个匹配。</span><br><span class="line">[^xyz] &gt;&gt; 表示除了x、y、z之外都可以匹配。[^]，就表示匹配一切字符</span><br><span class="line">[A-Z] &gt;&gt; 表示26个大写字母。[0123456789]可以写成[0-9]</span><br></pre></td></tr></table></figure></li>
+<li><p>{} &gt;&gt; 表示模式的精确匹配次数，{n}表示恰好重复n次，{n,}表示至少重复n次，{n,m}表示重复不少于n次，不多于m次。</p>
+</li>
+<li><p>量词符 &gt;&gt; 用来设定某个模式出现的次数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">? &gt;&gt; 问号表示某个模式出现0次或1次，等同于&#123;0, 1&#125;。</span><br><span class="line">* &gt;&gt; 星号表示某个模式出现0次或多次，等同于&#123;0,&#125;。</span><br><span class="line">+ &gt;&gt; 加号表示某个模式出现1次或多次，等同于&#123;1,&#125;。</span><br></pre></td></tr></table></figure></li>
+<li><p>预定义模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\d 匹配0-9之间的任一数字，相当于[0-9]。</span><br><span class="line">\D 匹配所有0-9以外的字符，相当于[^0-9]。</span><br><span class="line">\w 匹配任意的字母、数字和下划线，相当于[A-Za-z0-9_]。</span><br><span class="line">\W 除所有字母、数字和下划线以外的字符，相当于[^A-Za-z0-9_]。</span><br><span class="line">\s 匹配空格（包括换行符、制表符、空格符等），相等于[ \t\r\n\v\f]。</span><br><span class="line">\S 匹配非空格的字符，相当于[^ \t\r\n\v\f]。</span><br><span class="line">\b 匹配词的边界。</span><br><span class="line">\B 匹配非词边界，即在词的内部。</span><br></pre></td></tr></table></figure></li>
+<li><p>修饰符 &gt;&gt; 表示模式的附加规则，放在正则模式的最尾部。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1) g &gt;&gt; 含有g修饰符，每次都是从上一次匹配成功处，开始向后匹配</span><br><span class="line">	const regex &#x3D; &#x2F;b&#x2F;g;</span><br><span class="line">    const str &#x3D; &#39;abba&#39;;</span><br><span class="line"></span><br><span class="line">    regex.test(str); &#x2F;&#x2F; true</span><br><span class="line">    regex.test(str); &#x2F;&#x2F; true</span><br><span class="line">    regex.test(str); &#x2F;&#x2F; false</span><br><span class="line">2) i &gt;&gt; 正则对象区分字母的大小写，加上i修饰符以后表示忽略大小写</span><br><span class="line">	&#x2F;abc&#x2F;.test(&#39;ABC&#39;) &#x2F;&#x2F; false</span><br><span class="line">	&#x2F;abc&#x2F;i.test(&#39;ABC&#39;) &#x2F;&#x2F; true</span><br><span class="line">3) m &gt;&gt; 表示多行模式（multiline），会修改^和$的行为</span><br><span class="line">	&#x2F;world$&#x2F;.test(&#39;hello world\n&#39;) &#x2F;&#x2F; false</span><br><span class="line">	&#x2F;world$&#x2F;m.test(&#39;hello world\n&#39;) &#x2F;&#x2F; true</span><br><span class="line">  &#x2F;^b&#x2F;m.test(&#39;a\nb&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li><p>()组匹配 &gt;&gt; 括号表示分组匹配，括号中的模式可以用来匹配分组的内容。组匹配时，不宜同时使用g修饰符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;fred+&#x2F;.test(&#39;fredd&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;(fred)+&#x2F;.test(&#39;fredfred&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="4、JSON对象"><a href="#4、JSON对象" class="headerlink" title="4、JSON对象"></a>4、JSON对象</h4><h5 id="1）静态方法"><a href="#1）静态方法" class="headerlink" title="1）静态方法"></a>1）静态方法</h5><ul>
+<li>JSON.stringify() // 用于将一个值转为 JSON 字符串。</li>
+<li>JSON.parse() // 用于将 JSON 字符串转换成对应的值。</li>
+<li>JSON.parse(JSON.stringify()) // 可以实现深拷贝，但不能有函数和RegExp, Date, Set, Map等对象</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AD%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8B%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AD%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8B%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">js基础系列（六）引用类型之包装对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:44:24 / 修改时间：22:46:52" itemprop="dateCreated datePublished" datetime="2020-08-06T22:44:24+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="1）定义"><a href="#1）定义" class="headerlink" title="1）定义"></a>1）定义</h5><p>对象是 JavaScript 语言最主要的数据类型，三种原始类型的值——数值、字符串、布尔值——在一定条件下，也会自动转为对象，也就是原始类型的“包装对象”（wrapper）。所谓“包装对象”，指的是与数值、字符串、布尔值分别相对应的Number、String、Boolean三个原生对象。这三个原生对象可以把原始类型的值变成（包装成）对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const v1 &#x3D; new Number(123)</span><br><span class="line">const v2 &#x3D; new String(&#39;abc&#39;)</span><br><span class="line">const v3 &#x3D; new Boolean(true)</span><br><span class="line"></span><br><span class="line">typeof v1 &#x2F;&#x2F; &#39;object&#39;</span><br><span class="line">typeof v2 &#x2F;&#x2F; &#39;object&#39;</span><br><span class="line">typeof v3 &#x2F;&#x2F; &#39;object&#39;</span><br><span class="line"></span><br><span class="line">v1 &#x3D;&#x3D;&#x3D; 123 &#x2F;&#x2F; false</span><br><span class="line">v2 &#x3D;&#x3D;&#x3D; &#39;abc&#39; &#x2F;&#x2F; false</span><br><span class="line">v3 &#x3D;&#x3D;&#x3D; true &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure>
+<p>包装对象的设计目的，首先是使得“对象”这种类型可以覆盖 JavaScript 所有的值，整门语言有一个通用的数据模型，其次是使得原始类型的值也有办法调用自己的方法。</p>
+<p>Number(), String(), Boolean()这三个对象作为构造函数使用（带有new）时，可以将原始类型的值转为对象；作为普通函数使用时（不带有new），可以将任意类型的值，转为原始类型的值。</p>
+<h5 id="2）valueOf-和toString"><a href="#2）valueOf-和toString" class="headerlink" title="2）valueOf()和toString()"></a>2）valueOf()和toString()</h5><ul>
+<li>valueOf()<br>valueOf()方法返回包装对象实例对应的原始类型的值。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new Number(123).valueOf()  &#x2F;&#x2F; 123</span><br><span class="line">new String(&#39;abc&#39;).valueOf() &#x2F;&#x2F; &#39;abc&#39;</span><br><span class="line">new Boolean(true).valueOf() &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li>toString()<br>toString()方法返回对应的字符串形式。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new Number(123).toString() &#x2F;&#x2F; &#39;123&#39;</span><br><span class="line">new String(&#39;abc&#39;).toString() &#x2F;&#x2F; &#39;abc&#39;</span><br><span class="line">new Boolean(true).toString() &#x2F;&#x2F; &#39;true&#39;</span><br></pre></td></tr></table></figure>
+<h5 id="3）原始类型与实例对象的自动转换"><a href="#3）原始类型与实例对象的自动转换" class="headerlink" title="3）原始类型与实例对象的自动转换"></a>3）原始类型与实例对象的自动转换</h5>实际上，每当读取一个基本类型值的时候，后台就会创建一个对应的基本包装类型的对象，从而让我们 能够调用一些方法来操作这些数据。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 比如，字符串可以调用length属性，返回字符串的长度。</span><br><span class="line">let str &#x3D; &#39;abc&#39;;&#39;</span><br><span class="line">str.length &#x2F;&#x2F; 3</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 等同于</span><br><span class="line">var strObj &#x3D; new String(str)</span><br><span class="line">&#x2F;&#x2F; String &#123;</span><br><span class="line">&#x2F;&#x2F;   0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39;, length: 3, [[PrimitiveValue]]: &#39;abc&#39;</span><br><span class="line">&#x2F;&#x2F; &#125;</span><br><span class="line">strObj.length &#x2F;&#x2F; 3</span><br></pre></td></tr></table></figure>
+abc是一个字符串，本身不是对象，不能调用length属性。JavaScript 引擎自动将其转为包装对象，在这个对象上调用length属性。调用结束后，这个临时对象就会被销毁。这就叫原始类型与实例对象的自动转换。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/" class="post-title-link" itemprop="url">js基础系列（五）引用类型之Array</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:38:13 / 修改时间：22:41:54" itemprop="dateCreated datePublished" datetime="2020-08-06T22:38:13+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="1）创建-Array-实例的方式有两种"><a href="#1）创建-Array-实例的方式有两种" class="headerlink" title="1）创建 Array 实例的方式有两种"></a>1）创建 Array 实例的方式有两种</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Array 构造函数</span><br><span class="line">const arr &#x3D; new Array()</span><br><span class="line">const arr &#x3D; new Array(20) &#x2F;&#x2F; 创建 length 值为 20 的数组</span><br><span class="line">const arr &#x3D; new Array(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;) &#x2F;&#x2F; 包含3个字符串值的数组</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 另一种方式是使用数组字面量表示法</span><br><span class="line">const arr &#x3D; []</span><br><span class="line">const arr &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]; &#x2F;&#x2F; 创建一个包含3个字符串的数组</span><br></pre></td></tr></table></figure>
+<h5 id="2）类数组"><a href="#2）类数组" class="headerlink" title="2）类数组"></a>2）类数组</h5><p>本质上，数组属于一种特殊的对象。所以typeof运算符会返回数组的类型是object。且每个数组都有length属性。如果一个对象的所有键名都是正整数或零，并且有length属性，那么这个对象就很像数组，称为类数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const obj &#x3D; &#123;</span><br><span class="line">  0: &#39;a&#39;,</span><br><span class="line">  1: &#39;b&#39;,</span><br><span class="line">  2: &#39;c&#39;,</span><br><span class="line">  length: 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的obj就是一个类数组对象，但并不是数组，因为它们不具备数组特有的方法。类数组根本特征，就是具有length属性。只要有length属性，就可以认为这个对象类似于数组。但是有一个问题，这种length属性不是动态值，不会随着成员的变化而变化。比如为obj添加了一个数字键，length属性不会变。实际中类数组有函数的arguments对象，以及大多数 DOM 元素集，还有字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 类数组转数组ES5</span><br><span class="line">const arr &#x3D; [].slice.call(arrayLike)</span><br><span class="line">&#x2F;&#x2F; 类数组转数组ES6</span><br><span class="line">const arr &#x3D; Array.from(arrayLike)</span><br></pre></td></tr></table></figure>
+<h5 id="3）数组方法"><a href="#3）数组方法" class="headerlink" title="3）数组方法"></a>3）数组方法</h5><ul>
+<li>Array本身的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Array.from() &#x2F;&#x2F; 将类数组和可遍历（iterable）的对象转为数组</span><br><span class="line">Array.isArray() &#x2F;&#x2F; 用于确定传递的值是否是一个 Array，如果值是 Array，则为true; 否则为false。</span><br><span class="line">Array.of() &#x2F;&#x2F; 用于将一组数转为数组</span><br></pre></td></tr></table></figure></li>
+<li>Array的实例方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype.concat() &#x2F;&#x2F; 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。如果数组成员包括对象，concat方法返回当前数组的一个浅拷贝。现在可用扩展运算符替代concat</span><br><span class="line">	const a1 &#x3D; [1, 2]</span><br><span class="line">    const a2 &#x3D; [3, 4]</span><br><span class="line">    const a3 &#x3D; a1.concat(a2) &#x2F;&#x2F; ES5</span><br><span class="line">    const a3 &#x3D; [...a1, ...a2] &#x2F;&#x2F; ES6</span><br><span class="line">Array.prototype.copyWithin(target, start &#x3D; 0, end &#x3D; this.length) &#x2F;&#x2F; 在当前数组内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组。会修改当前数组。</span><br><span class="line">	- target（必需）：从该位置开始替换数据。如果为负值，表示倒数。</span><br><span class="line">    - start（可选）：从该位置开始读取数据，默认为 0。如果为负值，表示从末尾开始计算。</span><br><span class="line">    - end（可选）：到该位置前停止读取数据，默认等于数组长度。如果为负值，表示从末尾开始计算。</span><br><span class="line">    </span><br><span class="line">Array.prototype.entries()</span><br><span class="line">Array.prototype.keys() </span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; entries()，keys()和values()——用于遍历数组，它们都返回一个遍历器对象，配合for...of循环进行遍历，唯一的区别是keys()是对键名的遍历、values()是对键值的遍历，entries()是对键值对的遍历。</span><br><span class="line"></span><br><span class="line">Array.prototype.every() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。所有成员的返回值都是true，整个every方法才返回true，否则返回false。</span><br><span class="line">Array.prototype.some() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。只要一个成员的返回值是true，则整个some方法的返回值就是true，否则返回false。</span><br><span class="line">Array.prototype.map() &#x2F;&#x2F; 将数组的所有成员依次传入参数函数，然后把每一次的执行结果组成一个新数组返回。map方法接受一个函数作为参数。该函数调用时，map方法向它传入三个参数：当前成员、当前位置和数组本身。</span><br><span class="line">Array.prototype.forEach() &#x2F;&#x2F; forEach方法与map方法很相似。但是，forEach方法不返回值，只用来操作数据。forEach方法无法中断执行，总是会将所有成员遍历完。</span><br><span class="line">Array.prototype.filter() &#x2F;&#x2F; 用于过滤数组成员，满足条件的成员组成一个新数组返回。它的参数是一个函数，所有数组成员依次执行该函数，返回结果为true的成员组成一个新数组返回。该方法不会改变原数组。filter方法的参数函数可以接受三个参数：当前成员，当前位置和整个数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.fill() &#x2F;&#x2F; 使用给定值，填充一个数组。fill方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。注意，如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。</span><br><span class="line"></span><br><span class="line">Array.prototype.find() &#x2F;&#x2F; 用于找出第一个符合条件的数组成员。它的参数是一个回调函数，可以接受三个参数，依次为当前的值、当前的位置和原数组。所有数组成员依次执行该回调函数，直到找出第一个返回值为true的成员，然后返回该成员。如果没有符合条件的成员，则返回undefined。</span><br><span class="line">Array.prototype.findIndex() &#x2F;&#x2F; findIndex方法的用法与find方法非常类似，返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回-1。</span><br><span class="line">Array.prototype.indexOf() &#x2F;&#x2F; indexOf方法返回给定元素在数组中第一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.lastIndexOf() &#x2F;&#x2F; lastIndexOf方法返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.includes() &#x2F;&#x2F; 返回一个布尔值，表示某个数组是否包含给定的值。没有该方法之前，我们通常使用数组的indexOf方法，检查是否包含某个值。但这个方法弥补了对NaN误判对缺陷。</span><br><span class="line"></span><br><span class="line">Array.prototype.flat() &#x2F;&#x2F; 用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。参数表示要拉平但层数。</span><br><span class="line">Array.prototype.flatMap() &#x2F;&#x2F; 对原数组的每个成员执行一个函数（相当于执行map()），然后对返回值组成的数组执行flat()方法。该方法返回一个新数组，不改变原数组。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Array.prototype.reduce() </span><br><span class="line">Array.prototype.reduceRight() &#x2F;&#x2F; reduce方法和reduceRight方法依次处理数组的每个成员，最终累计为一个值。它们的差别是，reduce是从左到右处理（从第一个成员到最后一个成员），reduceRight则是从右到左（从最后一个成员到第一个成员），其他完全一样。这两个方法第一个参数都是一个函数。该函数接受以下四个参数。累积变量，默认为数组的第一个成员</span><br><span class="line"></span><br><span class="line">Array.prototype.join() &#x2F;&#x2F; join()方法以指定参数作为分隔符，将所有数组成员连接为一个字符串返回。如果不提供参数，默认用逗号分隔。</span><br><span class="line"></span><br><span class="line">Array.prototype.push() &#x2F;&#x2F; 用于在数组的末端添加一个或多个元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line">Array.prototype.pop() &#x2F;&#x2F; 用于删除数组的最后一个元素，并返回该元素。注意，该方法会改变原数组。push和pop结合使用，就构成了“后进先出”的栈结构（stack）。</span><br><span class="line">Array.prototype.shift() &#x2F;&#x2F; 用于删除数组的第一个元素，并返回该元素。注意，该方法会改变原数组。push()和shift()结合使用，就构成了“先进先出”的队列结构（queue）。</span><br><span class="line">Array.prototype.unshift() &#x2F;&#x2F; 用于在数组的第一个位置添加元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.reverse() &#x2F;&#x2F; 用于颠倒排列数组元素，返回改变后的数组。注意，该方法将改变原数组</span><br><span class="line">Array.prototype.sort() &#x2F;&#x2F; 对数组成员进行排序，默认是按照字典顺序排序。排序后，原数组将被改变。</span><br><span class="line"></span><br><span class="line">Array.prototype.slice() &#x2F;&#x2F; 用于提取目标数组的一部分，返回一个新数组，原数组不变。它的第一个参数为起始位置（从0开始，会包括在返回的新数组之中），第二个参数为终止位置（但该位置的元素本身不包括在内）。如果省略第二个参数，则一直返回到原数组的最后一个成员。slice()方法的一个重要应用，是将类似数组的对象转为真正的数组。</span><br><span class="line">Array.prototype.splice() &#x2F;&#x2F; 用于删除原数组的一部分成员，并可以在删除的位置添加新的数组成员，返回值是被删除的元素。注意，该方法会改变原数组。第一个参数是删除的起始位置（从0开始），第二个参数是被删除的元素个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。</span><br><span class="line"></span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; valueOf方法是一个所有对象都拥有的方法，表示对该对象求值。不同对象的valueOf方法不尽一致，数组的valueOf方法返回数组本身。</span><br><span class="line"></span><br><span class="line">Array.prototype.toString() &#x2F;&#x2F; toString方法也是对象的通用方法，数组的toString方法返回数组的字符串形式。</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/" class="post-title-link" itemprop="url">js基础系列（四）引用类型之Object</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-03 21:16:17" itemprop="dateCreated datePublished" datetime="2020-08-03T21:16:17+08:00">2020-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-06 22:40:52" itemprop="dateModified" datetime="2020-08-06T22:40:52+08:00">2020-08-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="1）创建-Object-实例的方式有三种"><a href="#1）创建-Object-实例的方式有三种" class="headerlink" title="1）创建 Object 实例的方式有三种"></a>1）创建 Object 实例的方式有三种</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Object 构造函数</span><br><span class="line">const obj &#x3D; new Object();</span><br><span class="line">obj.name &#x3D; &#39;song&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 第二种方式是使用对象字面量表示法</span><br><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 第三种是用Object.create()，使用指定的原型对象和属性创建一个新对象</span><br><span class="line">const o &#x3D; Object.create(null)</span><br></pre></td></tr></table></figure>
+<h5 id="2）new"><a href="#2）new" class="headerlink" title="2）new"></a>2）new</h5><p>new是用来新建对象的。为什么用new来新建对象？因为当我们批量生产对象时，虽然js用原型链解决重复生产对象的问题，但代码不优雅，中间过程比较繁琐。因此用new来封装了下，new主要做了这么几件事(参考<a href="https://juejin.im/post/5c7b963ae51d453eb173896e" target="_blank" rel="noopener">yck</a>和<a href="https://juejin.im/post/584e1ac50ce463005c618ca2" target="_blank" rel="noopener">方应杭</a>)：</p>
+<ul>
+<li>新建临时空对象</li>
+<li>这个对象绑定原型链</li>
+<li>将这个对象绑定到构造函数上，并且传入剩余的参数</li>
+<li>最后return<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">new的例子：</span><br><span class="line">function Test(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">&#125;</span><br><span class="line">Test.prototype.sayName &#x3D; function () &#123;</span><br><span class="line">    console.log(this.name)</span><br><span class="line">&#125;</span><br><span class="line">const t &#x3D; new Test(&#39;yck&#39;)</span><br><span class="line">const a &#x3D; myNew(Test, &#39;yck&#39;)  &#x2F;&#x2F; 新写</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">new重写：</span><br><span class="line">function myNew(fn, ...args) &#123;</span><br><span class="line">    &#x2F;&#x2F; 创建一个空对象 obj，并且访问到构造函数原型链上的属性</span><br><span class="line">    let instance &#x3D; Object.create(fn.prototype)</span><br><span class="line">    &#x2F;&#x2F;绑定到构造函数上，并且传入剩余的参数</span><br><span class="line">    let res &#x3D; fn.apply(instance, args)</span><br><span class="line">    &#x2F;&#x2F; 判断构造函数返回值是否为对象，如果为对象就使用构造函数返回的值，否则使用 obj，这样就实现了忽略构造函数返回的原始值</span><br><span class="line">    return res instanceof Object ? res: instance</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="3）对象属性的读取和赋值"><a href="#3）对象属性的读取和赋值" class="headerlink" title="3）对象属性的读取和赋值"></a>3）对象属性的读取和赋值</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 读取和赋值对象属性也有两种方法</span><br><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;</span><br><span class="line">&#125;</span><br><span class="line">obj.name &#x2F;&#x2F; song</span><br><span class="line">obj[&#39;name&#39;] &#x2F;&#x2F; song 这里的name如果不加单引号，就会被认为是变量，这个特性在操作复杂对象的时候很方便</span><br></pre></td></tr></table></figure>
+<h5 id="4）删除属性"><a href="#4）删除属性" class="headerlink" title="4）删除属性"></a>4）删除属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete obj.name</span><br></pre></td></tr></table></figure>
+<h5 id="5）属性的遍历"><a href="#5）属性的遍历" class="headerlink" title="5）属性的遍历"></a>5）属性的遍历</h5><p>可以用for…in来遍历一个对象的全部属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;,</span><br><span class="line">    age: 18</span><br><span class="line">&#125;</span><br><span class="line">for (item in obj) &#123;</span><br><span class="line">    console.log(item)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但用for…in来遍历对象，有个注意点，它不仅遍历对象但属性，还遍历继承属性，如果不想遍历继承属性，可以使用Object.keys()、Object.values()、Object.entries()</p>
+<h5 id="6）Object属性"><a href="#6）Object属性" class="headerlink" title="6）Object属性"></a>6）Object属性</h5><p>JavaScript 提供了一个内部数据结构，用来描述对象的属性，控制它的行为，比如该属性是否可写、可遍历等等。这个内部数据结构称为“属性描述对象”。每个属性都有自己对应的属性描述对象，保存该属性的一些元信息。</p>
+<pre><code>{
+  value: 123,  // value是该属性的属性值，默认为undefined
+  writable: false,  // 是一个布尔值，表示属性值（value）是否可改变（即是否可写），默认为true。
+  enumerable: true,  // enumerable是一个布尔值，表示该属性是否可遍历，默认为true。如果设为false，会使得某些操作（比如for...in循环、Object.keys()）跳过该属性。
+  configurable: false,  // configurable是一个布尔值，表示可配置性，默认为true。如果设为false，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（value属性除外）。也就是说，configurable属性控制了属性描述对象的可写性。
+  get: undefined,  // get是一个函数，表示该属性的取值函数（getter），默认为undefined。
+  set: undefined  // set是一个函数，表示该属性的存值函数（setter），默认为undefined。
+}</code></pre><h5 id="7）Object方法"><a href="#7）Object方法" class="headerlink" title="7）Object方法"></a>7）Object方法</h5><p>Object对象的原生方法分成两类：Object本身的方法与Object的实例方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Object本身的方法：指直接定义在Object上的方法</span><br><span class="line">Object.song &#x3D; function () &#123;&#125; &#x2F;&#x2F; 这里song这个方法就是本身的方法</span><br><span class="line"></span><br><span class="line">Object的实例方法：定义在Object原型对象Object.prototype上的方法。它可以被Object实例直接使用。</span><br><span class="line">Object.prototype.print &#x3D; function () &#123;&#125;</span><br><span class="line"></span><br><span class="line">var obj &#x3D; new Object();</span><br><span class="line">obj.print() &#x2F;&#x2F; 这个print是可以被实例化调用</span><br></pre></td></tr></table></figure>
+<p>（1）Object本身的方法</p>
+<ul>
+<li>对象属性模型的相关方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.getOwnPropertyDescriptor()：获取某个属性的描述对象</span><br><span class="line">Object.getOwnPropertyDescriptor()：获取一个对象的所有自身属性的描述</span><br><span class="line">Object.getOwnPropertyNames()：返回一个指定对象的所有自身属性的属性名数组（包括不可枚举但不包括Symbol）</span><br><span class="line">Object.getOwnPropertySymbols()：返回一个指定对象的所有Symbol属性的数组</span><br><span class="line">Object.defineProperty()：通过描述对象，定义某个属性</span><br><span class="line">Object.defineProperties()：通过描述对象，定义多个属性</span><br></pre></td></tr></table></figure></li>
+<li>对象处理相关方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Object.assign(): 用于对象的合并，将源对象的所有可枚举属性复制到目标对象，注意这是浅拷贝，有同名属性会进行替换</span><br><span class="line">Object.create(): 创建一个新对象，使用现有对象来提供新创建的对象的_protp_</span><br><span class="line">Object.is(): 比较两个值是否相等。用来补充（&#x3D;&#x3D;&#x3D;）</span><br><span class="line">    +0 &#x3D;&#x3D;&#x3D; -0 &#x2F;&#x2F; true</span><br><span class="line">    NaN &#x3D;&#x3D;&#x3D; NaN &#x2F;&#x2F; false</span><br><span class="line">    Object.is(+0, -0) &#x2F;&#x2F; false</span><br><span class="line">    Object.is(NaN, NaN) &#x2F;&#x2F; true</span><br><span class="line">Object.entries()、Object.keys()、Object.values(): 这三个方法类似，都是遍历自身可枚举属性</span><br><span class="line">Object.fromEntries(): 把map结构转化为对象的形式</span><br><span class="line">Object.getPrototypeOf()：获取对象原型，即Prototype对象</span><br></pre></td></tr></table></figure></li>
+<li>控制对象状态的方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.freeze()：冻结一个对象，不能增加、修改、删除</span><br><span class="line">Object.isFrozen()：判断一个对象是否被冻结</span><br><span class="line">Object.seal()：阻止添加新属性，禁止对象配置</span><br><span class="line">Object.isSealed()：判断一个对象是否可配置</span><br><span class="line">Object.isExtensible()：判断对象是否可扩展</span><br><span class="line">Object.preventExtensions()：防止对象扩展</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>（2）Object的实例方法</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Object.prototype.hasOwnProperty()：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性</span><br><span class="line">Object.prototype.isPrototypeOf()：判断当前对象是否为另一个对象的原型</span><br><span class="line">Object.prototype.propertyIsEnumerable()：判断某个属性是否可枚举</span><br><span class="line">Object.prototype.toLocaleString()：返回当前对象对应的本地字符串形式，这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的toLocaleString，用来返回针对某些地域的特定的值</span><br><span class="line">Object.prototype.toString()：返回当前对象对应的字符串形式，类型转换的时候会自动调用，数组、字符串、函数、Date对象都分别部署了自定义的toString方法，覆盖了Object.prototype.toString方法，还可以进行前文所说的类型判断</span><br><span class="line">Object.prototype.valueOf()：返回当前对象对应的值(可用来检测类型)，valueOf方法的主要用途是，JavaScript自动类型转换时会默认调用这个方法。数组、布尔、时间等对象都重写了该函</span><br><span class="line">    Number()进行类型转化的时候，先调用valueOf，再调用toString</span><br><span class="line">    String()进行类型转化的时候，先调用toString，再调用valueOf</span><br></pre></td></tr></table></figure></code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -154,7 +870,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
+      <meta itemprop="name" content="铁马书生">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -209,288 +925,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">js基础系列（二）数据类型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-30 07:36:29 / 修改时间：08:48:54" itemprop="dateCreated datePublished" datetime="2020-07-30T07:36:29+08:00">2020-07-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>js数据类型有七种，分为基本类型和引用类型</p>
-<pre><code>基本类型：string、boolean、number、undefined、null、symbol
-引用类型（也叫复杂类型）：Object
-引用类型中又可分为：狭义的object、function、array、Date、RegExp等</code></pre><h4 id="1、数据类型检测手段"><a href="#1、数据类型检测手段" class="headerlink" title="1、数据类型检测手段"></a>1、数据类型检测手段</h4><p>由于js是松散的，所以需要方法来判断给定值的数据类型，目前有三种方法</p>
-<p>1）typeof</p>
-<pre><code>typeof &apos;123&apos; // &quot;string&quot;
-typeof 123 // &quot;number&quot;
-typeof false // &quot;boolean&quot;
-typeof undefined // &quot;undefined&quot;
-typeof Symbol() // &quot;symbol&quot;
-typeof null // &quot;object&quot;
-typeof { } // &quot;object&quot;
-typeof [] // &quot;object&quot;
-typeof new Date // &quot;object&quot;
-typeof new RegExp // &quot;object&quot;
-typeof function() {} // &quot;function&quot;</code></pre><p>typeof只能判断除了null之外的基本数据类型，那如果我想区分{}和[]该怎么判断？可以用Object.prototype.toString</p>
-<p>2）Object.prototype.toString</p>
-<pre><code>Object.prototype.toString.call(1) // &quot;[object Number]&quot;
-Object.prototype.toString.call(&apos;hi&apos;) // &quot;[object String]&quot;
-Object.prototype.toString.call({a:&apos;hi&apos;}) // &quot;[object Object]&quot;
-Object.prototype.toString.call([1,&apos;a&apos;]) // &quot;[object Array]&quot;
-Object.prototype.toString.call(true) // &quot;[object Boolean]&quot;
-Object.prototype.toString.call(() =&gt; {}) // &quot;[object Function]&quot;
-Object.prototype.toString.call(null) // &quot;[object Null]&quot;
-Object.prototype.toString.call(undefined) // &quot;[object Undefined]&quot;
-Object.prototype.toString.call(Symbol(1)) // &quot;[object Symbol]&quot;
-Object.prototype.toString.call(Math) // &quot;[object Math]&quot;
-Object.prototype.toString.call(new Date) // &quot;[object Date]&quot;
-Object.prototype.toString.call(Math) // &quot;[object Math]&quot;</code></pre><p>利用Object.prototype.toString可以做出比typeof更加精准的判断</p>
-<p>2）instanceof</p>
-<ul>
-<li>instanceof表示对象是否为某个构造函数的实例，返回的是布尔值  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const d &#x3D; new Date()</span><br><span class="line">d instanceof Date &#x2F;&#x2F; true</span><br><span class="line">d instanceof Object &#x2F;&#x2F; 由于instanceof是在原型链上查找，只要处于原型链中，判断永远为true。所以返回是true</span><br><span class="line"></span><br><span class="line">undefined instanceof Object &#x2F;&#x2F; false</span><br><span class="line">null instanceof Object &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure></li>
-<li>instanceof只能用于对象，不适用于基本数据类型</li>
-</ul>
-<h4 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h4><ul>
-<li><p>反斜杠用来表示转义，比如常用的有换行、回车等，用到了再去查。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\n  &#x2F;&#x2F; 换行</span><br><span class="line">\r  &#x2F;&#x2F; 回车</span><br></pre></td></tr></table></figure></li>
-<li><p>把一个值转换为字符串有两个方法。第一个是toString()，数值、布尔值、对象和字符串值都有 toString()方法，但 null 和 undefined 值没有这个方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 数组</span><br><span class="line">let arr &#x3D; 123</span><br><span class="line">const arrString &#x3D; arr.toString()</span><br><span class="line">console.log(arrString)  &#x2F;&#x2F; &#39;123&#39;</span><br><span class="line">&#x2F;&#x2F; 布尔</span><br><span class="line">let bool &#x3D; false</span><br><span class="line">const boolString &#x3D; bool.toString()</span><br><span class="line">console.log(boolString)</span><br><span class="line">&#x2F;&#x2F; 对象</span><br><span class="line">let obj &#x3D; &#123; a: &#39;123&#39; &#125;</span><br><span class="line">const objString &#x3D; obj.toString()</span><br><span class="line">console.log(objString)  &#x2F;&#x2F; [object Object]</span><br></pre></td></tr></table></figure>
-<p>第二个是函数String()，这个函数能够将任何类型的值转换为字符串。如果值是null，则返回’null’。如果值是undefined，则返回’undefined’。</p>
-</li>
-<li><p>在ES6中，新增了字符串模版</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const a &#x3D; 123</span><br><span class="line">const &#x3D; &#96;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;first&lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;second&lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;$&#123;a&#125;&lt;&#x2F;li&gt; &#x2F;&#x2F; $&#123;&#125;里存放js表达式</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line">&#96;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h4 id="3、boolean类型"><a href="#3、boolean类型" class="headerlink" title="3、boolean类型"></a>3、boolean类型</h4><pre><code>boolean类型只有true和false这两种状态。
-除了 undefined、null、false、0、NaN、&apos;&apos; 之外，其他都为ture
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">boolean()的类型转换，除了下面这些，其他的都是true</span><br><span class="line">Boolean(undefined) &#x2F;&#x2F; false</span><br><span class="line">Boolean(null) &#x2F;&#x2F; false</span><br><span class="line">Boolean(0) &#x2F;&#x2F; false</span><br><span class="line">Boolean(NaN) &#x2F;&#x2F; false</span><br><span class="line">Boolean(&#39;&#39;) &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure></code></pre><h4 id="4、number类型"><a href="#4、number类型" class="headerlink" title="4、number类型"></a>4、number类型</h4><pre><code>（1）0.1 + 0.2 === 0.3 // false
-0.1和0.2在转换成二进制后会无限循环，由于标准位数的限制后面多余的位数会被截掉，此时就已经出现了精度的损失，相加后因浮点数小数位的限制而截断的二进制数字在转换为十进制就会变成0.30000000000000004。
-
-（2）NaN。NaN表示非数字，主要出现在将字符串解析成数字出错的场合。
-NaN有三个特性  
-    1）任何涉及NaN的操作（例如NaN/10）都会返回NaN。
-    2）NaN与任何值都不相等，包括NaN本身。
-    3）typeof NaN // &apos;number&apos;。所以在ES6中加入了Number.isNaN()用来检查一个值是否为NaN
-
-（3）数值转换。把非数值转换为数值有三个方法，其中ES6把parseInt和parseFloat移植到Number对象上
-    1）Number()。
-    如果是Boolean值，true和false将分别被转换为1和0。
-    如果是null值，返回0。
-    如果是undefined返回NaN。
-    如果字符串是空的（不包含任何字符），则将其转换为0。
-    如果字符串是非数字的，则将其转换为NaN。
-    2）parseInt()：用于将字符串转为整数
-    parseInt是从第一个非空格字符解析，如果不是数字或者负号则返回NaN，直到遇到非数字字符（小数点并不是有效的数字字符）。所以如果字符串是空的），则将其转换为NaN。
-    3）parseFloat()：用于将字符串转为浮点数
-    parseFloat()与 parseInt()的区别是parseFloat第一个小数点有效</code></pre><h4 id="5、undefined和null类型"><a href="#5、undefined和null类型" class="headerlink" title="5、undefined和null类型"></a>5、undefined和null类型</h4><p>1）undefined</p>
-<ul>
-<li>undefined表示未定义，当var定义了没有赋值，这是js默认值为undefined</li>
-<li>之前在用antd的select组件时，当初始值为空字符串时，placeholder属性就不起作用，初始值设为undefined就可以了。</li>
-</ul>
-<p>2）null</p>
-<ul>
-<li>null表示的是空值，空指针对象。所以 typeof null 为object</li>
-<li>如果定义的变量准备在将来用于保存对象，最好将其初始化为null</li>
-</ul>
-<h4 id="6、symbol类型"><a href="#6、symbol类型" class="headerlink" title="6、symbol类型"></a>6、symbol类型</h4><p>symbol表示独一无二的值，从根本上防止属性名的冲突。其中的细节请参考阮一峰老师的ES6入门</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/25/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%98%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/25/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">js基础系列（一）变量</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-25 18:32:30" itemprop="dateCreated datePublished" datetime="2020-07-25T18:32:30+08:00">2020-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-30 07:35:03" itemprop="dateModified" datetime="2020-07-30T07:35:03+08:00">2020-07-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>js是松散类型的，即可以保存任何变量，通过定义变量有四种方式：   </p>
-<h4 id="1、var。通过var来定义变量"><a href="#1、var。通过var来定义变量" class="headerlink" title="1、var。通过var来定义变量"></a>1、var。通过var来定义变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; &#39;小宋&#39;</span><br><span class="line">a &#x2F;&#x2F; 小宋</span><br></pre></td></tr></table></figure>
-<p>如果是在函数中定义，那该变量就是函数作用域中的变量，该变量在函数退出后销毁。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    var b &#x3D; &#39;hello&#39;</span><br><span class="line">    console.log(b)</span><br><span class="line">&#125;</span><br><span class="line">a() &#x2F;&#x2F; helo</span><br><span class="line">console.log(b) &#x2F;&#x2F; b is not defined</span><br></pre></td></tr></table></figure>
-<h4 id="2、直接赋值-平时不要使用，但有时笔试会挖坑"><a href="#2、直接赋值-平时不要使用，但有时笔试会挖坑" class="headerlink" title="2、直接赋值(平时不要使用，但有时笔试会挖坑)"></a>2、直接赋值(平时不要使用，但有时笔试会挖坑)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    b &#x3D; &#39;hello&#39;</span><br><span class="line">    console.log(b)</span><br><span class="line">&#125;</span><br><span class="line">a() &#x2F;&#x2F; hello</span><br><span class="line">console.log(b) &#x2F;&#x2F; hello</span><br></pre></td></tr></table></figure>
-<h4 id="3、let和const与var的区别"><a href="#3、let和const与var的区别" class="headerlink" title="3、let和const与var的区别"></a>3、let和const与var的区别</h4><p>let和const是在ES6中提出的，和var最大的区别是let和const会产生块级作用域。在js中有全局作用域和函数作用域（eval几乎不用，就不考虑了），没有块级作用域。let和const实际上为js增加了块级作用域。更多例子和细节请参考阮一峰老师的<a href="https://es6.ruanyifeng.com/#docs/let" target="_blank" rel="noopener">ECMAScript6入门</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 大括号</span><br><span class="line">&#123;</span><br><span class="line">    let a &#x3D; &#39;hello&#39;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; if语句</span><br><span class="line">if (true) &#123;</span><br><span class="line">    const a &#x3D; &#39;hello&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还有个区别可能好多人都没注意，看下面这个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (true) &#123;</span><br><span class="line">    console.log(bb)  &#x2F;&#x2F; undefined</span><br><span class="line">    var bb &#x3D; &#39;bb&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (true) &#123;</span><br><span class="line">    console.log(aa)  &#x2F;&#x2F; Cannot access &#39;aa&#39; before initialization</span><br><span class="line">    let aa &#x3D; &#39;aa&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为什么这打印的不一样？<br>是因为在第一段代码中，var会进行变量提升，其执行顺序其实是这样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (true) &#123;</span><br><span class="line">    var bb &#x2F;&#x2F; 在创建过程中，找到每一个变量声明，为其添加属性值undefined，所以下面打印出来是undefined</span><br><span class="line">    console.log(bb)</span><br><span class="line">    bb &#x3D; &#39;bb&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在第二段代码中，执行顺序一样，也会进行变量提升，但是在提升后却没有添加属性值undefined，所有报错说没有初始化。</p>
-<h4 id="4、let和const的区别"><a href="#4、let和const的区别" class="headerlink" title="4、let和const的区别"></a>4、let和const的区别</h4><p>阮一峰老师已经说的很详细了。那在平时项目中用的时候，除非是定义基本数据类型，其它的都是用const，因为这时候const保存的是一个指针，这个指针指向的存贮值内存地址。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 定义对象</span><br><span class="line">const a &#x3D; &#123;</span><br><span class="line">    age： &#39;18&#39;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 定义数组</span><br><span class="line">const b &#x3D; [1, 2, 3]</span><br><span class="line">&#x2F;&#x2F; 定义函数</span><br><span class="line">const fun &#x3D; () &#x3D;&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/25/%E6%84%9F%E6%82%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋进波">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="渣渣宋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/25/%E6%84%9F%E6%82%9F/" class="post-title-link" itemprop="url">最近面试总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-25 18:21:46" itemprop="dateCreated datePublished" datetime="2020-07-25T18:21:46+08:00">2020-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-26 17:46:57" itemprop="dateModified" datetime="2020-07-26T17:46:57+08:00">2020-07-26</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近参加了一些面试，总体效果非常差，甚至有个面试官最后说，你先把基础打牢了再去面试。。。自己总结了下</p>
-<p>1、我的js基础没有成体系，总是一块一块的，所以面试的时候感觉非常糟糕。这个我需要整理js基础，由点到线成面。<br>2、css同样如此。<br>4、react知其然不知所以然，react相关的也只是停留在会用，比如redux，需要深入的理解。<br>5、没有自己的东西，面试之前总会抓瞎，像没头的苍蝇各种blog、官网乱看，所以我建了blog。</p>
-<p>今年我会写三个系列，js基础系列、css基础系列、react理解加实战系列</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -555,7 +994,7 @@ NaN有三个特性
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

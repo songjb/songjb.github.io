@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、Date对象1）Date用法Date对象是 JavaScript 原生的时间库。Date对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。 12Date()&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot; Date还可以当作构造函数使用。 12const time &#x3D; new Date()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（七）引用类型之Date对象、Math对象、RegExp对象、JSON对象">
+<meta property="og:url" content="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%83%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BDate%E5%AF%B9%E8%B1%A1%E3%80%81Math%E5%AF%B9%E8%B1%A1%E3%80%81RegExp%E5%AF%B9%E8%B1%A1%E3%80%81JSON%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="铁马书生">
+<meta property="og:description" content="1、Date对象1）Date用法Date对象是 JavaScript 原生的时间库。Date对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。 12Date()&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot; Date还可以当作构造函数使用。 12const time &#x3D; new Date()">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-06T14:47:32.304Z">
+<meta property="article:modified_time" content="2020-08-06T15:01:31.664Z">
+<meta property="article:author" content="宋进波">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%83%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BDate%E5%AF%B9%E8%B1%A1%E3%80%81Math%E5%AF%B9%E8%B1%A1%E3%80%81RegExp%E5%AF%B9%E8%B1%A1%E3%80%81JSON%E5%AF%B9%E8%B1%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js基础系列（七）引用类型之Date对象、Math对象、RegExp对象、JSON对象 | 铁马书生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">铁马书生</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%83%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BDate%E5%AF%B9%E8%B1%A1%E3%80%81Math%E5%AF%B9%E8%B1%A1%E3%80%81RegExp%E5%AF%B9%E8%B1%A1%E3%80%81JSON%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（七）引用类型之Date对象、Math对象、RegExp对象、JSON对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:47:32 / 修改时间：23:01:31" itemprop="dateCreated datePublished" datetime="2020-08-06T22:47:32+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1、Date对象"><a href="#1、Date对象" class="headerlink" title="1、Date对象"></a>1、Date对象</h4><h5 id="1）Date用法"><a href="#1）Date用法" class="headerlink" title="1）Date用法"></a>1）Date用法</h5><p>Date对象是 JavaScript 原生的时间库。Date对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Date()</span><br><span class="line">&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br></pre></td></tr></table></figure>
+<p>Date还可以当作构造函数使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const time &#x3D; new Date()</span><br><span class="line">&#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br></pre></td></tr></table></figure>
+<h5 id="2）静态方法"><a href="#2）静态方法" class="headerlink" title="2）静态方法"></a>2）静态方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Date.now() &#x2F;&#x2F; 1596615142604 &#x2F;&#x2F; 返回当前时间距离时间零点（1970年1月1日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以1000。</span><br><span class="line">Date.parse() &#x2F;&#x2F; 用来解析日期字符串，返回该时间距离时间零点（1970年1月1日 00:00:00）的毫秒数。</span><br><span class="line">Date.UTC() &#x2F;&#x2F; 接受年、月、日等变量作为参数，返回该时间距离时间零点（1970年1月1日 00:00:00 UTC）的毫秒数。</span><br></pre></td></tr></table></figure>
+<h5 id="3）实例方法"><a href="#3）实例方法" class="headerlink" title="3）实例方法"></a>3）实例方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Date.prototype.valueOf() &#x2F;&#x2F; 返回实例对象距离时间零点（1970年1月1日00:00:00 UTC）对应的毫秒数，该方法等同于getTime方法。</span><br><span class="line">    var d &#x3D; new Date()</span><br><span class="line">    d.valueOf() &#x2F;&#x2F; 1596615142604</span><br><span class="line">    d.getTime() &#x2F;&#x2F; 1596615142604</span><br><span class="line">Date.prototype.toString() &#x2F;&#x2F; 返回一个完整的日期字符串</span><br><span class="line">	  const time &#x3D; new Date()</span><br><span class="line">    time.toString()</span><br><span class="line">	  &#x2F;&#x2F; &quot;Wed Aug 05 2020 15:58:51 GMT+0800 (中国标准时间)&quot;</span><br><span class="line">Date.prototype.toUTCString() &#x2F;&#x2F; 返回对应的 UTC 时间，也就是比北京时间晚8个小时。</span><br><span class="line">Date.prototype.toISOString() &#x2F;&#x2F; 返回对应时间的 ISO8601 写法。</span><br><span class="line">Date.prototype.toJSON() &#x2F;&#x2F; 返回一个符合 JSON 格式的 ISO 日期字符串，与toISOString方法的返回结果完全相同。</span><br><span class="line">Date.prototype.toDateString() &#x2F;&#x2F; 返回日期字符串（不含小时、分和秒）</span><br><span class="line">Date.prototype.toTimeString() &#x2F;&#x2F; 返回时间字符串（不含年月日）</span><br><span class="line"></span><br><span class="line">Date.prototype.toLocaleString() &#x2F;&#x2F; 返回完整的本地时间</span><br><span class="line">Date.prototype.toLocaleDateString() &#x2F;&#x2F; 返回本地日期（不含小时、分和秒）</span><br><span class="line">Date.prototype.toLocaleTimeString() &#x2F;&#x2F; 返回本地时间（不含年月日）</span><br><span class="line">	  const time &#x3D; new Date(2020, 7, 5)</span><br><span class="line">    time.toLocaleString() &#x2F;&#x2F; 2020&#x2F;8&#x2F;5 上午12:00:00</span><br><span class="line">    time.toLocaleDateString() &#x2F;&#x2F; 2020&#x2F;8&#x2F;5</span><br><span class="line">    time.toLocaleTimeString() &#x2F;&#x2F; 上午12:00:00</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Date.prototype.getTime()：返回实例距离1970年1月1日00:00:00的毫秒数，等同于valueOf方法。</span><br><span class="line">Date.prototype.getDate()：返回实例对象对应每个月的几号（从1开始）。</span><br><span class="line">Date.prototype.getDay()：返回星期几，星期日为0，星期一为1，以此类推。</span><br><span class="line">Date.prototype.getFullYear()：返回四位的年份。</span><br><span class="line">Date.prototype.getMonth()：返回月份（0表示1月，11表示12月）。</span><br><span class="line">Date.prototype.getHours()：返回小时（0-23）。</span><br><span class="line">Date.prototype.getMilliseconds()：返回毫秒（0-999）。</span><br><span class="line">Date.prototype.getMinutes()：返回分钟（0-59）。</span><br><span class="line">Date.prototype.getSeconds()：返回秒（0-59）。</span><br><span class="line">Date.prototype.getTimezoneOffset()：返回当前时间与 UTC 的时区差异，以分钟表示，返回结果考虑到了夏令时因素。</span><br><span class="line"></span><br><span class="line">Date.prototype.setDate(date)：设置实例对象对应的每个月的几号（1-31），返回改变后毫秒时间戳。</span><br><span class="line">Date.prototype.setFullYear(year [, month, date])：设置四位年份。</span><br><span class="line">Date.prototype.setHours(hour [, min, sec, ms])：设置小时（0-23）。</span><br><span class="line">Date.prototype.setMilliseconds()：设置毫秒（0-999）。</span><br><span class="line">Date.prototype.setMinutes(min [, sec, ms])：设置分钟（0-59）。</span><br><span class="line">Date.prototype.setMonth(month [, date])：设置月份（0-11）。</span><br><span class="line">Date.prototype.setSeconds(sec [, ms])：设置秒（0-59）。</span><br><span class="line">Date.prototype.setTime(milliseconds)：设置毫秒时间戳。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、Math对象"><a href="#2、Math对象" class="headerlink" title="2、Math对象"></a>2、Math对象</h4><h5 id="1）静态属性"><a href="#1）静态属性" class="headerlink" title="1）静态属性"></a>1）静态属性</h5><p>Math对象的静态属性，提供以下一些数学常数。这些属性都是只读的，不能修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Math.E：常数e。</span><br><span class="line">Math.LN2：2 的自然对数。</span><br><span class="line">Math.LN10：10 的自然对数。</span><br><span class="line">Math.LOG2E：以 2 为底的e的对数。</span><br><span class="line">Math.LOG10E：以 10 为底的e的对数。</span><br><span class="line">Math.PI：常数π。</span><br><span class="line">Math.SQRT1_2：0.5 的平方根。</span><br><span class="line">Math.SQRT2：2 的平方根。</span><br></pre></td></tr></table></figure>
+<h5 id="2）静态方法-1"><a href="#2）静态方法-1" class="headerlink" title="2）静态方法"></a>2）静态方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Math.abs()：绝对值</span><br><span class="line">Math.ceil()：向上取整。返回大于参数值的最小整数（天花板值）</span><br><span class="line">Math.floor()：向下取整。返回小于参数值的最大整数（地板值）</span><br><span class="line">Math.max()：最大值</span><br><span class="line">Math.min()：最小值</span><br><span class="line">Math.pow()：幂运算</span><br><span class="line">Math.sqrt()：平方根</span><br><span class="line">Math.log()：自然对数</span><br><span class="line">Math.exp()：e的指数</span><br><span class="line">Math.round()：四舍五入</span><br><span class="line">Math.random()：返回0到1之间的一个伪随机数，可能等于0，但是一定小于1。</span><br></pre></td></tr></table></figure>
+<h5 id="3）三角函数方法"><a href="#3）三角函数方法" class="headerlink" title="3）三角函数方法"></a>3）三角函数方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Math.sin()：返回参数的正弦（参数为弧度值）</span><br><span class="line">Math.cos()：返回参数的余弦（参数为弧度值）</span><br><span class="line">Math.tan()：返回参数的正切（参数为弧度值）</span><br><span class="line">Math.asin()：返回参数的反正弦（返回值为弧度值）</span><br><span class="line">Math.acos()：返回参数的反余弦（返回值为弧度值）</span><br><span class="line">Math.atan()：返回参数的反正切（返回值为弧度值）</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、RegExp对象"><a href="#3、RegExp对象" class="headerlink" title="3、RegExp对象"></a>3、RegExp对象</h4><h5 id="1）创建"><a href="#1）创建" class="headerlink" title="1）创建"></a>1）创建</h5><p>表达式有两种方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const regex &#x3D; &#x2F;xyz&#x2F;  &#x2F;&#x2F; 一种是使用字面量，以斜杠表示开始和结束</span><br><span class="line">const regex &#x3D; new RegExp(&#39;xyz&#39;)  &#x2F;&#x2F; 另一种是使用RegExp构造函数</span><br></pre></td></tr></table></figure>
+<h5 id="2）正则表达式的标志"><a href="#2）正则表达式的标志" class="headerlink" title="2）正则表达式的标志"></a>2）正则表达式的标志</h5><ul>
+<li><p>g:表示全局(global)模式，即模式将被应用于所有字符串，而非在发现第一个匹配项时立即停止</p>
+</li>
+<li><p>i:表示不区分大小写(case-insensitive)模式，即在确定匹配项时忽略模式与字符串的大小写</p>
+</li>
+<li><p>m:表示多行(multiline)模式，即在到达一行文本末尾时还会继续查找下一行中是否存在与模<br>式匹配的项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 匹配字符串中所有&quot;at&quot;的实例</span><br><span class="line">const pattern1 &#x3D; &#x2F;at&#x2F;g </span><br><span class="line">&#x2F;&#x2F; 匹配第一个&quot;bat&quot;或&quot;cat&quot;，不区分大小写</span><br><span class="line">const pattern2 &#x3D; &#x2F;[bc]at&#x2F;i</span><br><span class="line">&#x2F;&#x2F; 匹配所有以&quot;at&quot;结尾的 3 个字符的组合，不区分大小写</span><br><span class="line">const pattern3 &#x3D; &#x2F;.at&#x2F;gi</span><br></pre></td></tr></table></figure>
+<h5 id="3）实例属性"><a href="#3）实例属性" class="headerlink" title="3）实例属性"></a>3）实例属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> global:布尔值，表示是否设置了 g 标志。</span><br><span class="line"> ignoreCase:布尔值，表示是否设置了 i 标志。</span><br><span class="line"> lastIndex:整数，表示开始搜索下一个匹配项的字符位置，从 0 算起。</span><br><span class="line"> multiline:布尔值，表示是否设置了 m 标志。</span><br><span class="line"> source:正则表达式的字符串表示，按照字面量形式而非传入构造函数中的字符串模式返回。</span><br></pre></td></tr></table></figure>
+<h5 id="4）实例方法"><a href="#4）实例方法" class="headerlink" title="4）实例方法"></a>4）实例方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RegExp.prototype.test() &#x2F;&#x2F; test方法返回一个布尔值，表示当前模式是否能匹配参数字符串。</span><br><span class="line">	&#x2F;cat&#x2F;.test(&#39;cats and dogs&#39;) &#x2F;&#x2F; true</span><br><span class="line">RegExp.prototype.exec() &#x2F;&#x2F; 用来返回匹配结果。如果发现匹配，就返回一个数组，成员是匹配成功的子字符串，否则返回null。exec包含两个额外的属性:index 和 input。其中，index 表示匹配 项在字符串中的位置，而 input 表示应用正则表达式的字符串。</span><br></pre></td></tr></table></figure>
+<h5 id="5）匹配规则"><a href="#5）匹配规则" class="headerlink" title="5）匹配规则"></a>5）匹配规则</h5></li>
+<li><p>/abc/  &gt;&gt; 字面量字符，这个就是匹配abc</p>
+</li>
+<li><p>.  &gt;&gt; 匹配除回车（\r）、换行(\n) 、行分隔符（\u2028）和段分隔符（\u2029）以外的所有字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;c.t&#x2F;  &gt;&gt;c.t匹配c和t之间包含任意一个字符的情况，只要这三个字符在同一行，比如cat、c2t、c-t等等，但是不匹配coot。</span><br></pre></td></tr></table></figure></li>
+<li><p>^ &gt;&gt; 表示字符串的开始位置</p>
+</li>
+<li><p>$ &gt;&gt; 表示字符串的结束位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; test必须出现在开始位置</span><br><span class="line">&#x2F;^test&#x2F;.test(&#39;test123&#39;) &#x2F;&#x2F; true</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; test必须出现在结束位置</span><br><span class="line">&#x2F;test$&#x2F;.test(&#39;new test&#39;) &#x2F;&#x2F; true</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 从开始位置到结束位置只有test</span><br><span class="line">&#x2F;^test$&#x2F;.test(&#39;test&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;^test$&#x2F;.test(&#39;test test&#39;) &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure></li>
+<li><p>| &gt;&gt; 中表示“或关系”（OR），即cat|dog表示匹配cat或dog。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;11|22&#x2F;.test(&#39;911&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;fred|barney|betty&#x2F; &#x2F;&#x2F; 匹配fred、barney、betty之中的一个</span><br></pre></td></tr></table></figure></li>
+<li><p>\ &gt;&gt; 如果要匹配它们本身，就需要在它们前面要加上反斜杠。比如要匹配+，就要写成+。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;1+1&#x2F;.test(&#39;1+1&#39;) &#x2F;&#x2F; false</span><br><span class="line">&#x2F;1\+1&#x2F;.test(&#39;1+1&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li><p>字符类 &gt;&gt; 表示有一系列字符可供选择，只要匹配其中一个就可以了。所有可供选择的字符都放在方括号内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[xyz] &gt;&gt; 表示x、y、z之中任选一个匹配。</span><br><span class="line">[^xyz] &gt;&gt; 表示除了x、y、z之外都可以匹配。[^]，就表示匹配一切字符</span><br><span class="line">[A-Z] &gt;&gt; 表示26个大写字母。[0123456789]可以写成[0-9]</span><br></pre></td></tr></table></figure></li>
+<li><p>{} &gt;&gt; 表示模式的精确匹配次数，{n}表示恰好重复n次，{n,}表示至少重复n次，{n,m}表示重复不少于n次，不多于m次。</p>
+</li>
+<li><p>量词符 &gt;&gt; 用来设定某个模式出现的次数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">? &gt;&gt; 问号表示某个模式出现0次或1次，等同于&#123;0, 1&#125;。</span><br><span class="line">* &gt;&gt; 星号表示某个模式出现0次或多次，等同于&#123;0,&#125;。</span><br><span class="line">+ &gt;&gt; 加号表示某个模式出现1次或多次，等同于&#123;1,&#125;。</span><br></pre></td></tr></table></figure></li>
+<li><p>预定义模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\d 匹配0-9之间的任一数字，相当于[0-9]。</span><br><span class="line">\D 匹配所有0-9以外的字符，相当于[^0-9]。</span><br><span class="line">\w 匹配任意的字母、数字和下划线，相当于[A-Za-z0-9_]。</span><br><span class="line">\W 除所有字母、数字和下划线以外的字符，相当于[^A-Za-z0-9_]。</span><br><span class="line">\s 匹配空格（包括换行符、制表符、空格符等），相等于[ \t\r\n\v\f]。</span><br><span class="line">\S 匹配非空格的字符，相当于[^ \t\r\n\v\f]。</span><br><span class="line">\b 匹配词的边界。</span><br><span class="line">\B 匹配非词边界，即在词的内部。</span><br></pre></td></tr></table></figure></li>
+<li><p>修饰符 &gt;&gt; 表示模式的附加规则，放在正则模式的最尾部。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1) g &gt;&gt; 含有g修饰符，每次都是从上一次匹配成功处，开始向后匹配</span><br><span class="line">	const regex &#x3D; &#x2F;b&#x2F;g;</span><br><span class="line">    const str &#x3D; &#39;abba&#39;;</span><br><span class="line"></span><br><span class="line">    regex.test(str); &#x2F;&#x2F; true</span><br><span class="line">    regex.test(str); &#x2F;&#x2F; true</span><br><span class="line">    regex.test(str); &#x2F;&#x2F; false</span><br><span class="line">2) i &gt;&gt; 正则对象区分字母的大小写，加上i修饰符以后表示忽略大小写</span><br><span class="line">	&#x2F;abc&#x2F;.test(&#39;ABC&#39;) &#x2F;&#x2F; false</span><br><span class="line">	&#x2F;abc&#x2F;i.test(&#39;ABC&#39;) &#x2F;&#x2F; true</span><br><span class="line">3) m &gt;&gt; 表示多行模式（multiline），会修改^和$的行为</span><br><span class="line">	&#x2F;world$&#x2F;.test(&#39;hello world\n&#39;) &#x2F;&#x2F; false</span><br><span class="line">	&#x2F;world$&#x2F;m.test(&#39;hello world\n&#39;) &#x2F;&#x2F; true</span><br><span class="line">  &#x2F;^b&#x2F;m.test(&#39;a\nb&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li><p>()组匹配 &gt;&gt; 括号表示分组匹配，括号中的模式可以用来匹配分组的内容。组匹配时，不宜同时使用g修饰符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;fred+&#x2F;.test(&#39;fredd&#39;) &#x2F;&#x2F; true</span><br><span class="line">&#x2F;(fred)+&#x2F;.test(&#39;fredfred&#39;) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="4、JSON对象"><a href="#4、JSON对象" class="headerlink" title="4、JSON对象"></a>4、JSON对象</h4><h5 id="1）静态方法"><a href="#1）静态方法" class="headerlink" title="1）静态方法"></a>1）静态方法</h5><ul>
+<li>JSON.stringify() // 用于将一个值转为 JSON 字符串。</li>
+<li>JSON.parse() // 用于将 JSON 字符串转换成对应的值。</li>
+<li>JSON.parse(JSON.stringify()) // 可以实现深拷贝，但不能有函数和RegExp, Date, Set, Map等对象</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AD%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8B%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1/" rel="prev" title="js基础系列（六）引用类型之包装对象">
+      <i class="fa fa-chevron-left"></i> js基础系列（六）引用类型之包装对象
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AB%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BFunction%E5%AF%B9%E8%B1%A1/" rel="next" title="js基础系列（八）引用类型之Function对象">
+      js基础系列（八）引用类型之Function对象 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Date对象"><span class="nav-number">1.</span> <span class="nav-text">1、Date对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）Date用法"><span class="nav-number">1.1.</span> <span class="nav-text">1）Date用法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）静态方法"><span class="nav-number">1.2.</span> <span class="nav-text">2）静态方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）实例方法"><span class="nav-number">1.3.</span> <span class="nav-text">3）实例方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Math对象"><span class="nav-number">2.</span> <span class="nav-text">2、Math对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）静态属性"><span class="nav-number">2.1.</span> <span class="nav-text">1）静态属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）静态方法-1"><span class="nav-number">2.2.</span> <span class="nav-text">2）静态方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）三角函数方法"><span class="nav-number">2.3.</span> <span class="nav-text">3）三角函数方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、RegExp对象"><span class="nav-number">3.</span> <span class="nav-text">3、RegExp对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）创建"><span class="nav-number">3.1.</span> <span class="nav-text">1）创建</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）正则表达式的标志"><span class="nav-number">3.2.</span> <span class="nav-text">2）正则表达式的标志</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）实例属性"><span class="nav-number">3.3.</span> <span class="nav-text">3）实例属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4）实例方法"><span class="nav-number">3.4.</span> <span class="nav-text">4）实例方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5）匹配规则"><span class="nav-number">3.5.</span> <span class="nav-text">5）匹配规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、JSON对象"><span class="nav-number">4.</span> <span class="nav-text">4、JSON对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）静态方法"><span class="nav-number">4.1.</span> <span class="nav-text">1）静态方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋进波</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋进波</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

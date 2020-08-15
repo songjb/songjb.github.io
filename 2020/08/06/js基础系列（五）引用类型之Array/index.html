@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1）创建 Array 实例的方式有两种12345678&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Array 构造函数const arr &#x3D; new Array()const arr &#x3D; new Array(20) &#x2F;&#x2F; 创建 length 值为 20 的数组const arr &#x3D; new Array(&#39;red&#39;,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（五）引用类型之Array">
+<meta property="og:url" content="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/index.html">
+<meta property="og:site_name" content="铁马书生">
+<meta property="og:description" content="1）创建 Array 实例的方式有两种12345678&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Array 构造函数const arr &#x3D; new Array()const arr &#x3D; new Array(20) &#x2F;&#x2F; 创建 length 值为 20 的数组const arr &#x3D; new Array(&#39;red&#39;,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-06T14:38:13.360Z">
+<meta property="article:modified_time" content="2020-08-06T14:41:54.798Z">
+<meta property="article:author" content="宋进波">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js基础系列（五）引用类型之Array | 铁马书生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">铁马书生</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（五）引用类型之Array
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-06 22:38:13 / 修改时间：22:41:54" itemprop="dateCreated datePublished" datetime="2020-08-06T22:38:13+08:00">2020-08-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1）创建-Array-实例的方式有两种"><a href="#1）创建-Array-实例的方式有两种" class="headerlink" title="1）创建 Array 实例的方式有两种"></a>1）创建 Array 实例的方式有两种</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Array 构造函数</span><br><span class="line">const arr &#x3D; new Array()</span><br><span class="line">const arr &#x3D; new Array(20) &#x2F;&#x2F; 创建 length 值为 20 的数组</span><br><span class="line">const arr &#x3D; new Array(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;) &#x2F;&#x2F; 包含3个字符串值的数组</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 另一种方式是使用数组字面量表示法</span><br><span class="line">const arr &#x3D; []</span><br><span class="line">const arr &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]; &#x2F;&#x2F; 创建一个包含3个字符串的数组</span><br></pre></td></tr></table></figure>
+<h5 id="2）类数组"><a href="#2）类数组" class="headerlink" title="2）类数组"></a>2）类数组</h5><p>本质上，数组属于一种特殊的对象。所以typeof运算符会返回数组的类型是object。且每个数组都有length属性。如果一个对象的所有键名都是正整数或零，并且有length属性，那么这个对象就很像数组，称为类数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const obj &#x3D; &#123;</span><br><span class="line">  0: &#39;a&#39;,</span><br><span class="line">  1: &#39;b&#39;,</span><br><span class="line">  2: &#39;c&#39;,</span><br><span class="line">  length: 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的obj就是一个类数组对象，但并不是数组，因为它们不具备数组特有的方法。类数组根本特征，就是具有length属性。只要有length属性，就可以认为这个对象类似于数组。但是有一个问题，这种length属性不是动态值，不会随着成员的变化而变化。比如为obj添加了一个数字键，length属性不会变。实际中类数组有函数的arguments对象，以及大多数 DOM 元素集，还有字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 类数组转数组ES5</span><br><span class="line">const arr &#x3D; [].slice.call(arrayLike)</span><br><span class="line">&#x2F;&#x2F; 类数组转数组ES6</span><br><span class="line">const arr &#x3D; Array.from(arrayLike)</span><br></pre></td></tr></table></figure>
+<h5 id="3）数组方法"><a href="#3）数组方法" class="headerlink" title="3）数组方法"></a>3）数组方法</h5><ul>
+<li>Array本身的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Array.from() &#x2F;&#x2F; 将类数组和可遍历（iterable）的对象转为数组</span><br><span class="line">Array.isArray() &#x2F;&#x2F; 用于确定传递的值是否是一个 Array，如果值是 Array，则为true; 否则为false。</span><br><span class="line">Array.of() &#x2F;&#x2F; 用于将一组数转为数组</span><br></pre></td></tr></table></figure></li>
+<li>Array的实例方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype.concat() &#x2F;&#x2F; 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。如果数组成员包括对象，concat方法返回当前数组的一个浅拷贝。现在可用扩展运算符替代concat</span><br><span class="line">	const a1 &#x3D; [1, 2]</span><br><span class="line">    const a2 &#x3D; [3, 4]</span><br><span class="line">    const a3 &#x3D; a1.concat(a2) &#x2F;&#x2F; ES5</span><br><span class="line">    const a3 &#x3D; [...a1, ...a2] &#x2F;&#x2F; ES6</span><br><span class="line">Array.prototype.copyWithin(target, start &#x3D; 0, end &#x3D; this.length) &#x2F;&#x2F; 在当前数组内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组。会修改当前数组。</span><br><span class="line">	- target（必需）：从该位置开始替换数据。如果为负值，表示倒数。</span><br><span class="line">    - start（可选）：从该位置开始读取数据，默认为 0。如果为负值，表示从末尾开始计算。</span><br><span class="line">    - end（可选）：到该位置前停止读取数据，默认等于数组长度。如果为负值，表示从末尾开始计算。</span><br><span class="line">    </span><br><span class="line">Array.prototype.entries()</span><br><span class="line">Array.prototype.keys() </span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; entries()，keys()和values()——用于遍历数组，它们都返回一个遍历器对象，配合for...of循环进行遍历，唯一的区别是keys()是对键名的遍历、values()是对键值的遍历，entries()是对键值对的遍历。</span><br><span class="line"></span><br><span class="line">Array.prototype.every() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。所有成员的返回值都是true，整个every方法才返回true，否则返回false。</span><br><span class="line">Array.prototype.some() &#x2F;&#x2F; 它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。只要一个成员的返回值是true，则整个some方法的返回值就是true，否则返回false。</span><br><span class="line">Array.prototype.map() &#x2F;&#x2F; 将数组的所有成员依次传入参数函数，然后把每一次的执行结果组成一个新数组返回。map方法接受一个函数作为参数。该函数调用时，map方法向它传入三个参数：当前成员、当前位置和数组本身。</span><br><span class="line">Array.prototype.forEach() &#x2F;&#x2F; forEach方法与map方法很相似。但是，forEach方法不返回值，只用来操作数据。forEach方法无法中断执行，总是会将所有成员遍历完。</span><br><span class="line">Array.prototype.filter() &#x2F;&#x2F; 用于过滤数组成员，满足条件的成员组成一个新数组返回。它的参数是一个函数，所有数组成员依次执行该函数，返回结果为true的成员组成一个新数组返回。该方法不会改变原数组。filter方法的参数函数可以接受三个参数：当前成员，当前位置和整个数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.fill() &#x2F;&#x2F; 使用给定值，填充一个数组。fill方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。注意，如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。</span><br><span class="line"></span><br><span class="line">Array.prototype.find() &#x2F;&#x2F; 用于找出第一个符合条件的数组成员。它的参数是一个回调函数，可以接受三个参数，依次为当前的值、当前的位置和原数组。所有数组成员依次执行该回调函数，直到找出第一个返回值为true的成员，然后返回该成员。如果没有符合条件的成员，则返回undefined。</span><br><span class="line">Array.prototype.findIndex() &#x2F;&#x2F; findIndex方法的用法与find方法非常类似，返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回-1。</span><br><span class="line">Array.prototype.indexOf() &#x2F;&#x2F; indexOf方法返回给定元素在数组中第一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.lastIndexOf() &#x2F;&#x2F; lastIndexOf方法返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1。不能用来搜索NaN的位置</span><br><span class="line">Array.prototype.includes() &#x2F;&#x2F; 返回一个布尔值，表示某个数组是否包含给定的值。没有该方法之前，我们通常使用数组的indexOf方法，检查是否包含某个值。但这个方法弥补了对NaN误判对缺陷。</span><br><span class="line"></span><br><span class="line">Array.prototype.flat() &#x2F;&#x2F; 用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。参数表示要拉平但层数。</span><br><span class="line">Array.prototype.flatMap() &#x2F;&#x2F; 对原数组的每个成员执行一个函数（相当于执行map()），然后对返回值组成的数组执行flat()方法。该方法返回一个新数组，不改变原数组。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Array.prototype.reduce() </span><br><span class="line">Array.prototype.reduceRight() &#x2F;&#x2F; reduce方法和reduceRight方法依次处理数组的每个成员，最终累计为一个值。它们的差别是，reduce是从左到右处理（从第一个成员到最后一个成员），reduceRight则是从右到左（从最后一个成员到第一个成员），其他完全一样。这两个方法第一个参数都是一个函数。该函数接受以下四个参数。累积变量，默认为数组的第一个成员</span><br><span class="line"></span><br><span class="line">Array.prototype.join() &#x2F;&#x2F; join()方法以指定参数作为分隔符，将所有数组成员连接为一个字符串返回。如果不提供参数，默认用逗号分隔。</span><br><span class="line"></span><br><span class="line">Array.prototype.push() &#x2F;&#x2F; 用于在数组的末端添加一个或多个元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line">Array.prototype.pop() &#x2F;&#x2F; 用于删除数组的最后一个元素，并返回该元素。注意，该方法会改变原数组。push和pop结合使用，就构成了“后进先出”的栈结构（stack）。</span><br><span class="line">Array.prototype.shift() &#x2F;&#x2F; 用于删除数组的第一个元素，并返回该元素。注意，该方法会改变原数组。push()和shift()结合使用，就构成了“先进先出”的队列结构（queue）。</span><br><span class="line">Array.prototype.unshift() &#x2F;&#x2F; 用于在数组的第一个位置添加元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</span><br><span class="line"></span><br><span class="line">Array.prototype.reverse() &#x2F;&#x2F; 用于颠倒排列数组元素，返回改变后的数组。注意，该方法将改变原数组</span><br><span class="line">Array.prototype.sort() &#x2F;&#x2F; 对数组成员进行排序，默认是按照字典顺序排序。排序后，原数组将被改变。</span><br><span class="line"></span><br><span class="line">Array.prototype.slice() &#x2F;&#x2F; 用于提取目标数组的一部分，返回一个新数组，原数组不变。它的第一个参数为起始位置（从0开始，会包括在返回的新数组之中），第二个参数为终止位置（但该位置的元素本身不包括在内）。如果省略第二个参数，则一直返回到原数组的最后一个成员。slice()方法的一个重要应用，是将类似数组的对象转为真正的数组。</span><br><span class="line">Array.prototype.splice() &#x2F;&#x2F; 用于删除原数组的一部分成员，并可以在删除的位置添加新的数组成员，返回值是被删除的元素。注意，该方法会改变原数组。第一个参数是删除的起始位置（从0开始），第二个参数是被删除的元素个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。</span><br><span class="line"></span><br><span class="line">Array.prototype.values() &#x2F;&#x2F; valueOf方法是一个所有对象都拥有的方法，表示对该对象求值。不同对象的valueOf方法不尽一致，数组的valueOf方法返回数组本身。</span><br><span class="line"></span><br><span class="line">Array.prototype.toString() &#x2F;&#x2F; toString方法也是对象的通用方法，数组的toString方法返回数组的字符串形式。</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/" rel="prev" title="js基础系列（四）引用类型之Object">
+      <i class="fa fa-chevron-left"></i> js基础系列（四）引用类型之Object
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AD%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8B%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1/" rel="next" title="js基础系列（六）引用类型之包装对象">
+      js基础系列（六）引用类型之包装对象 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）创建-Array-实例的方式有两种"><span class="nav-number">1.</span> <span class="nav-text">1）创建 Array 实例的方式有两种</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）类数组"><span class="nav-number">2.</span> <span class="nav-text">2）类数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）数组方法"><span class="nav-number">3.</span> <span class="nav-text">3）数组方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋进波</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋进波</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

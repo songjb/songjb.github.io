@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1）创建 Object 实例的方式有三种1234567891011&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Object 构造函数const obj &#x3D; new Object();obj.name &#x3D; &#39;song&#39;&#x2F;&#x2F; 第二种方式是使用对象字面量表示法const obj &#x3D; &amp;#123;    name: &amp;#39">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（四）引用类型之Object">
+<meta property="og:url" content="http://yoursite.com/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/index.html">
+<meta property="og:site_name" content="铁马书生">
+<meta property="og:description" content="1）创建 Object 实例的方式有三种1234567891011&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Object 构造函数const obj &#x3D; new Object();obj.name &#x3D; &#39;song&#39;&#x2F;&#x2F; 第二种方式是使用对象字面量表示法const obj &#x3D; &amp;#123;    name: &amp;#39">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-03T13:16:17.130Z">
+<meta property="article:modified_time" content="2020-08-06T14:40:52.047Z">
+<meta property="article:author" content="宋进波">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js基础系列（四）引用类型之Object | 铁马书生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">铁马书生</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BObject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（四）引用类型之Object
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-03 21:16:17" itemprop="dateCreated datePublished" datetime="2020-08-03T21:16:17+08:00">2020-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-06 22:40:52" itemprop="dateModified" datetime="2020-08-06T22:40:52+08:00">2020-08-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1）创建-Object-实例的方式有三种"><a href="#1）创建-Object-实例的方式有三种" class="headerlink" title="1）创建 Object 实例的方式有三种"></a>1）创建 Object 实例的方式有三种</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种是使用 new 操作符后跟 Object 构造函数</span><br><span class="line">const obj &#x3D; new Object();</span><br><span class="line">obj.name &#x3D; &#39;song&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 第二种方式是使用对象字面量表示法</span><br><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 第三种是用Object.create()，使用指定的原型对象和属性创建一个新对象</span><br><span class="line">const o &#x3D; Object.create(null)</span><br></pre></td></tr></table></figure>
+<h5 id="2）new"><a href="#2）new" class="headerlink" title="2）new"></a>2）new</h5><p>new是用来新建对象的。为什么用new来新建对象？因为当我们批量生产对象时，虽然js用原型链解决重复生产对象的问题，但代码不优雅，中间过程比较繁琐。因此用new来封装了下，new主要做了这么几件事(参考<a href="https://juejin.im/post/5c7b963ae51d453eb173896e" target="_blank" rel="noopener">yck</a>和<a href="https://juejin.im/post/584e1ac50ce463005c618ca2" target="_blank" rel="noopener">方应杭</a>)：</p>
+<ul>
+<li>新建临时空对象</li>
+<li>这个对象绑定原型链</li>
+<li>将这个对象绑定到构造函数上，并且传入剩余的参数</li>
+<li>最后return<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">new的例子：</span><br><span class="line">function Test(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">&#125;</span><br><span class="line">Test.prototype.sayName &#x3D; function () &#123;</span><br><span class="line">    console.log(this.name)</span><br><span class="line">&#125;</span><br><span class="line">const t &#x3D; new Test(&#39;yck&#39;)</span><br><span class="line">const a &#x3D; myNew(Test, &#39;yck&#39;)  &#x2F;&#x2F; 新写</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">new重写：</span><br><span class="line">function myNew(fn, ...args) &#123;</span><br><span class="line">    &#x2F;&#x2F; 创建一个空对象 obj，并且访问到构造函数原型链上的属性</span><br><span class="line">    let instance &#x3D; Object.create(fn.prototype)</span><br><span class="line">    &#x2F;&#x2F;绑定到构造函数上，并且传入剩余的参数</span><br><span class="line">    let res &#x3D; fn.apply(instance, args)</span><br><span class="line">    &#x2F;&#x2F; 判断构造函数返回值是否为对象，如果为对象就使用构造函数返回的值，否则使用 obj，这样就实现了忽略构造函数返回的原始值</span><br><span class="line">    return res instanceof Object ? res: instance</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="3）对象属性的读取和赋值"><a href="#3）对象属性的读取和赋值" class="headerlink" title="3）对象属性的读取和赋值"></a>3）对象属性的读取和赋值</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 读取和赋值对象属性也有两种方法</span><br><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;</span><br><span class="line">&#125;</span><br><span class="line">obj.name &#x2F;&#x2F; song</span><br><span class="line">obj[&#39;name&#39;] &#x2F;&#x2F; song 这里的name如果不加单引号，就会被认为是变量，这个特性在操作复杂对象的时候很方便</span><br></pre></td></tr></table></figure>
+<h5 id="4）删除属性"><a href="#4）删除属性" class="headerlink" title="4）删除属性"></a>4）删除属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete obj.name</span><br></pre></td></tr></table></figure>
+<h5 id="5）属性的遍历"><a href="#5）属性的遍历" class="headerlink" title="5）属性的遍历"></a>5）属性的遍历</h5><p>可以用for…in来遍历一个对象的全部属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const obj &#x3D; &#123;</span><br><span class="line">    name: &#39;song&#39;,</span><br><span class="line">    age: 18</span><br><span class="line">&#125;</span><br><span class="line">for (item in obj) &#123;</span><br><span class="line">    console.log(item)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但用for…in来遍历对象，有个注意点，它不仅遍历对象但属性，还遍历继承属性，如果不想遍历继承属性，可以使用Object.keys()、Object.values()、Object.entries()</p>
+<h5 id="6）Object属性"><a href="#6）Object属性" class="headerlink" title="6）Object属性"></a>6）Object属性</h5><p>JavaScript 提供了一个内部数据结构，用来描述对象的属性，控制它的行为，比如该属性是否可写、可遍历等等。这个内部数据结构称为“属性描述对象”。每个属性都有自己对应的属性描述对象，保存该属性的一些元信息。</p>
+<pre><code>{
+  value: 123,  // value是该属性的属性值，默认为undefined
+  writable: false,  // 是一个布尔值，表示属性值（value）是否可改变（即是否可写），默认为true。
+  enumerable: true,  // enumerable是一个布尔值，表示该属性是否可遍历，默认为true。如果设为false，会使得某些操作（比如for...in循环、Object.keys()）跳过该属性。
+  configurable: false,  // configurable是一个布尔值，表示可配置性，默认为true。如果设为false，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（value属性除外）。也就是说，configurable属性控制了属性描述对象的可写性。
+  get: undefined,  // get是一个函数，表示该属性的取值函数（getter），默认为undefined。
+  set: undefined  // set是一个函数，表示该属性的存值函数（setter），默认为undefined。
+}</code></pre><h5 id="7）Object方法"><a href="#7）Object方法" class="headerlink" title="7）Object方法"></a>7）Object方法</h5><p>Object对象的原生方法分成两类：Object本身的方法与Object的实例方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Object本身的方法：指直接定义在Object上的方法</span><br><span class="line">Object.song &#x3D; function () &#123;&#125; &#x2F;&#x2F; 这里song这个方法就是本身的方法</span><br><span class="line"></span><br><span class="line">Object的实例方法：定义在Object原型对象Object.prototype上的方法。它可以被Object实例直接使用。</span><br><span class="line">Object.prototype.print &#x3D; function () &#123;&#125;</span><br><span class="line"></span><br><span class="line">var obj &#x3D; new Object();</span><br><span class="line">obj.print() &#x2F;&#x2F; 这个print是可以被实例化调用</span><br></pre></td></tr></table></figure>
+<p>（1）Object本身的方法</p>
+<ul>
+<li>对象属性模型的相关方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.getOwnPropertyDescriptor()：获取某个属性的描述对象</span><br><span class="line">Object.getOwnPropertyDescriptor()：获取一个对象的所有自身属性的描述</span><br><span class="line">Object.getOwnPropertyNames()：返回一个指定对象的所有自身属性的属性名数组（包括不可枚举但不包括Symbol）</span><br><span class="line">Object.getOwnPropertySymbols()：返回一个指定对象的所有Symbol属性的数组</span><br><span class="line">Object.defineProperty()：通过描述对象，定义某个属性</span><br><span class="line">Object.defineProperties()：通过描述对象，定义多个属性</span><br></pre></td></tr></table></figure></li>
+<li>对象处理相关方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Object.assign(): 用于对象的合并，将源对象的所有可枚举属性复制到目标对象，注意这是浅拷贝，有同名属性会进行替换</span><br><span class="line">Object.create(): 创建一个新对象，使用现有对象来提供新创建的对象的_protp_</span><br><span class="line">Object.is(): 比较两个值是否相等。用来补充（&#x3D;&#x3D;&#x3D;）</span><br><span class="line">    +0 &#x3D;&#x3D;&#x3D; -0 &#x2F;&#x2F; true</span><br><span class="line">    NaN &#x3D;&#x3D;&#x3D; NaN &#x2F;&#x2F; false</span><br><span class="line">    Object.is(+0, -0) &#x2F;&#x2F; false</span><br><span class="line">    Object.is(NaN, NaN) &#x2F;&#x2F; true</span><br><span class="line">Object.entries()、Object.keys()、Object.values(): 这三个方法类似，都是遍历自身可枚举属性</span><br><span class="line">Object.fromEntries(): 把map结构转化为对象的形式</span><br><span class="line">Object.getPrototypeOf()：获取对象原型，即Prototype对象</span><br></pre></td></tr></table></figure></li>
+<li>控制对象状态的方法  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.freeze()：冻结一个对象，不能增加、修改、删除</span><br><span class="line">Object.isFrozen()：判断一个对象是否被冻结</span><br><span class="line">Object.seal()：阻止添加新属性，禁止对象配置</span><br><span class="line">Object.isSealed()：判断一个对象是否可配置</span><br><span class="line">Object.isExtensible()：判断对象是否可扩展</span><br><span class="line">Object.preventExtensions()：防止对象扩展</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>（2）Object的实例方法</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Object.prototype.hasOwnProperty()：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性</span><br><span class="line">Object.prototype.isPrototypeOf()：判断当前对象是否为另一个对象的原型</span><br><span class="line">Object.prototype.propertyIsEnumerable()：判断某个属性是否可枚举</span><br><span class="line">Object.prototype.toLocaleString()：返回当前对象对应的本地字符串形式，这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的toLocaleString，用来返回针对某些地域的特定的值</span><br><span class="line">Object.prototype.toString()：返回当前对象对应的字符串形式，类型转换的时候会自动调用，数组、字符串、函数、Date对象都分别部署了自定义的toString方法，覆盖了Object.prototype.toString方法，还可以进行前文所说的类型判断</span><br><span class="line">Object.prototype.valueOf()：返回当前对象对应的值(可用来检测类型)，valueOf方法的主要用途是，JavaScript自动类型转换时会默认调用这个方法。数组、布尔、时间等对象都重写了该函</span><br><span class="line">    Number()进行类型转化的时候，先调用valueOf，再调用toString</span><br><span class="line">    String()进行类型转化的时候，先调用toString，再调用valueOf</span><br></pre></td></tr></table></figure></code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/30/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="prev" title="js基础系列（三）内存空间">
+      <i class="fa fa-chevron-left"></i> js基础系列（三）内存空间
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/" rel="next" title="js基础系列（五）引用类型之Array">
+      js基础系列（五）引用类型之Array <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）创建-Object-实例的方式有三种"><span class="nav-number">1.</span> <span class="nav-text">1）创建 Object 实例的方式有三种</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）new"><span class="nav-number">2.</span> <span class="nav-text">2）new</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）对象属性的读取和赋值"><span class="nav-number">3.</span> <span class="nav-text">3）对象属性的读取和赋值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4）删除属性"><span class="nav-number">4.</span> <span class="nav-text">4）删除属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5）属性的遍历"><span class="nav-number">5.</span> <span class="nav-text">5）属性的遍历</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6）Object属性"><span class="nav-number">6.</span> <span class="nav-text">6）Object属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7）Object方法"><span class="nav-number">7.</span> <span class="nav-text">7）Object方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋进波</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋进波</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

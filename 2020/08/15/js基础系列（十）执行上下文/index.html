@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="执行上下文概念非常重要，但我总是理解不透，直到我看了波能反杀老师的前端基础进阶，醍醐灌顶。 当代码开始运行时，就会形成执行上下文，执行上下文可以理解为当前代码的执行环境，它会形成一个作用域。目前当作用域有三种（不包括ES6的块级作用域）  全局环境：JavaScript代码运行起来会首先进入该环境 函数环境：当函数被调用执行时，会进入当前函数中执行代码 eval（不建议使用，可忽略）  当一段程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（十）执行上下文">
+<meta property="og:url" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/index.html">
+<meta property="og:site_name" content="铁马书生">
+<meta property="og:description" content="执行上下文概念非常重要，但我总是理解不透，直到我看了波能反杀老师的前端基础进阶，醍醐灌顶。 当代码开始运行时，就会形成执行上下文，执行上下文可以理解为当前代码的执行环境，它会形成一个作用域。目前当作用域有三种（不包括ES6的块级作用域）  全局环境：JavaScript代码运行起来会首先进入该环境 函数环境：当函数被调用执行时，会进入当前函数中执行代码 eval（不建议使用，可忽略）  当一段程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/6.png">
+<meta property="article:published_time" content="2020-08-15T14:41:45.382Z">
+<meta property="article:modified_time" content="2020-08-15T15:19:37.413Z">
+<meta property="article:author" content="宋进波">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js基础系列（十）执行上下文 | 铁马书生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">铁马书生</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（十）执行上下文
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-15 22:41:45 / 修改时间：23:19:37" itemprop="dateCreated datePublished" datetime="2020-08-15T22:41:45+08:00">2020-08-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>执行上下文概念非常重要，但我总是理解不透，直到我看了波能反杀老师的<a href="https://www.jianshu.com/p/a6d37c77e8db" target="_blank" rel="noopener">前端基础进阶</a>，醍醐灌顶。</p>
+<p>当代码开始运行时，就会形成执行上下文，执行上下文可以理解为当前代码的执行环境，它会形成一个作用域。目前当作用域有三种（不包括ES6的块级作用域）</p>
+<ul>
+<li>全局环境：JavaScript代码运行起来会首先进入该环境</li>
+<li>函数环境：当函数被调用执行时，会进入当前函数中执行代码</li>
+<li>eval（不建议使用，可忽略）</li>
+</ul>
+<p>当一段程序运行时，势必会产生很多的执行上下文，js引擎会以栈的方式来处理，这个栈称<strong>函数调用栈</strong>。栈底永远都是全局上下文，而栈顶就是当前正在执行的上下文。</p>
+<h4 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">let color &#x3D; &#39;blue&#39;</span><br><span class="line"></span><br><span class="line">function changeColor() &#123;</span><br><span class="line">  let anotherColor &#x3D; &#39;red&#39;</span><br><span class="line"></span><br><span class="line">  function swapColors() &#123;</span><br><span class="line">    let tempColor &#x3D; anotherColor</span><br><span class="line">    anotherColor &#x3D; color</span><br><span class="line">    color &#x3D; tempColor</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  swapColors()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">changeColor()</span><br></pre></td></tr></table></figure>
+<p>用ECStack来表示存贮执行上下文的栈，第一步，把全局上下文入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/1.png" alt><br>然后js代码开始运行，当执行到changeColor()函数的时候，生成changeColor的执行上下文，然后把它压入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/2.png" alt><br>changeColor的执行上下文入栈后，开始执行开始changeColor里的代码，遇到swapColors()，创建swapColors的执行上下文，押入栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/3.png" alt><br>swapColors执行，发现不需要生成其他的执行上下文，完毕后就会出栈。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/4.png" alt><br>swapColors出栈后，就会执行swapColors代码，执行完毕后出栈。这样，ECStack中就只剩下全局上下文了。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/5.png" alt><br>全局上下文在浏览器窗口关闭后出栈。</p>
+<h4 id="这是一个闭包的🌰"><a href="#这是一个闭包的🌰" class="headerlink" title="这是一个闭包的🌰"></a>这是一个闭包的🌰</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function f1() &#123;</span><br><span class="line">  var n &#x3D; 999</span><br><span class="line">  function f2() &#123;</span><br><span class="line">    alert(n)</span><br><span class="line">  &#125;</span><br><span class="line">  return f2</span><br><span class="line">&#125;</span><br><span class="line">const result &#x3D; f1()</span><br><span class="line">result() &#x2F;&#x2F; 999</span><br></pre></td></tr></table></figure>
+<p>因为f1中的函数f2在f1的可执行代码中，并没有被调用执行，因此执行f1时，f2不会创建新的上下文，而直到result执行时，才创建了一个新的。具体演变过程如下。<br><img src="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%EF%BC%89%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/6.png" alt></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/06/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%85%AB%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BFunction%E5%AF%B9%E8%B1%A1/" rel="prev" title="js基础系列（八）引用类型之Function对象">
+      <i class="fa fa-chevron-left"></i> js基础系列（八）引用类型之Function对象
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E4%B9%9D%EF%BC%89%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%B9%8BArray/" rel="next" title="js基础系列（九）引用类型之Array">
+      js基础系列（九）引用类型之Array <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#举个🌰"><span class="nav-number">1.</span> <span class="nav-text">举个🌰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#这是一个闭包的🌰"><span class="nav-number">2.</span> <span class="nav-text">这是一个闭包的🌰</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋进波</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋进波</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
