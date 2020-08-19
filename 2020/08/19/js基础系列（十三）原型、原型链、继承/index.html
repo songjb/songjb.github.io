@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、对象在JavaScript中，生成对象有两种方法 12345678&#x2F;&#x2F; 通过构造函数生成新对象 const Cat &#x3D; new Object()&#x2F;&#x2F; 对象字面量创建对象const Cat &#x3D; &amp;#123;    name: &#39;大毛&#39;    color: &#39;白色&#39;&amp;#125; 这两种方式都可以生成对象，但">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js基础系列（十三）原型、原型链、继承">
+<meta property="og:url" content="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/index.html">
+<meta property="og:site_name" content="铁马书生">
+<meta property="og:description" content="1、对象在JavaScript中，生成对象有两种方法 12345678&#x2F;&#x2F; 通过构造函数生成新对象 const Cat &#x3D; new Object()&#x2F;&#x2F; 对象字面量创建对象const Cat &#x3D; &amp;#123;    name: &#39;大毛&#39;    color: &#39;白色&#39;&amp;#125; 这两种方式都可以生成对象，但">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/2.png">
+<meta property="article:published_time" content="2020-08-19T14:32:02.525Z">
+<meta property="article:modified_time" content="2020-08-19T14:50:12.909Z">
+<meta property="article:author" content="宋进波">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js基础系列（十三）原型、原型链、继承 | 铁马书生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">铁马书生</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋进波">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="铁马书生">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js基础系列（十三）原型、原型链、继承
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-19 22:32:02 / 修改时间：22:50:12" itemprop="dateCreated datePublished" datetime="2020-08-19T22:32:02+08:00">2020-08-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1、对象"><a href="#1、对象" class="headerlink" title="1、对象"></a>1、对象</h3><p>在JavaScript中，生成对象有两种方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 通过构造函数生成新对象</span><br><span class="line"> const Cat &#x3D; new Object()</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 对象字面量创建对象</span><br><span class="line">const Cat &#x3D; &#123;</span><br><span class="line">    name: &#39;大毛&#39;</span><br><span class="line">    color: &#39;白色&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这两种方式都可以生成对象，但是有时候并不能满足我们的需求，会产生大量重复的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const Cat1 &#x3D; &#123;</span><br><span class="line">    name: &#39;小毛&#39;,</span><br><span class="line">    color: &#39;白色&#39;,</span><br><span class="line">    age: 1</span><br><span class="line">&#125;</span><br><span class="line">const Cat2 &#x3D; &#123;</span><br><span class="line">    name: &#39;大毛&#39;,</span><br><span class="line">    color: &#39;白色&#39;,</span><br><span class="line">    age: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上段代码中有好多重复的，我们不得不重复写，为了解决这个问题，可以使用工厂模式</p>
+<h3 id="2、工厂模式"><a href="#2、工厂模式" class="headerlink" title="2、工厂模式"></a>2、工厂模式</h3><p>工厂模式是把创建对象的具体过程抽象出来，如下面的例子所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const createPerson &#x3D; function(name, age) &#123;</span><br><span class="line">    &#x2F;&#x2F; 声明一个中间对象，该对象就是工厂模式的模子</span><br><span class="line">    const o &#x3D; new Object()</span><br><span class="line">    &#x2F;&#x2F; 依次添加我们需要的属性与方法</span><br><span class="line">    o.name &#x3D; name</span><br><span class="line">    o.age &#x3D; age</span><br><span class="line">    o.getName &#x3D; function() &#123;</span><br><span class="line">        return this.name</span><br><span class="line">    &#125;</span><br><span class="line">    return o</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 创建两个实例</span><br><span class="line">const perTom &#x3D; createPerson(&#39;TOM&#39;, 20)</span><br><span class="line">const PerJake &#x3D; createPerson(&#39;Jake&#39;, 22)</span><br></pre></td></tr></table></figure>
+<p>createPerson()中，一些公共的方法和属性就不需要重复写了。工厂模式帮助我们解决了重复代码的问题。但是工厂模式存在一个问题，就是没有办法识别对象实例的类型</p>
+<h3 id="3、构造函数模式"><a href="#3、构造函数模式" class="headerlink" title="3、构造函数模式"></a>3、构造函数模式</h3><p>使用构造函数模式将前面的例子重写如下(构造函数首字母大写)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const Person &#x3D; function(name, age) &#123;  </span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">    this.age &#x3D; age</span><br><span class="line">    this.getName &#x3D; function() &#123;</span><br><span class="line">        return this.name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const p1 &#x3D; new Person(&#39;Ness&#39;, 20)</span><br><span class="line">const p2 &#x3D; new Person(&#39;Ness2&#39;, 20)</span><br><span class="line">console.log(p1.getName())  &#x2F;&#x2F; Ness</span><br><span class="line">console.log(p2.getName())  &#x2F;&#x2F; Ness2</span><br><span class="line">console.log(p1.constructor instanceof Person) &#x2F;&#x2F; true</span><br><span class="line">console.log(p1 instanceof Person) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+<p>注意点</p>
+<ul>
+<li>与普通函数相比，构造函数并没有任何特别的地方，首字母大写只是我们约定的小规定，用于区分普通函数</li>
+<li>每个实例都有一个constructor(构造函数)属性，该属性指向构造函数Person。对象的constructor属性最初是用来标识对象类型的。但是，提到检测对象类型，还是instanceof操作符要更可靠一些。</li>
+<li>创建自定义的构造函数意味着将来可以将它的实例标识为一种特定的类型，而这正是构造函数模式 胜过工厂模式的地方。<br>构造函数的缺点是每一个实例中的getName功能是一样的，但却不相等。所以每当新建一个实例的时候，就不得不一直不停的为getName分配空间。这是没有必要的，我们期望的是，既然都是实现同一个功能，那么就让每一个实例对象都访问同一个方法，这个可以用原型模式来解决。</li>
+</ul>
+<h3 id="4、原型模式"><a href="#4、原型模式" class="headerlink" title="4、原型模式"></a>4、原型模式</h3><p>我们创建的每一个函数，都可以有一个prototype属性，该属性指向一个对象。这个对象，就是我们这里说的原型。使用原型对象的好处是可以 让所有对象实例共享它所包含的属性和方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 声明构造函数</span><br><span class="line">function Person(name, age) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">    this.age &#x3D; age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 通过prototye属性，将方法挂载到原型对象上</span><br><span class="line">Person.prototype.getName &#x3D; function() &#123;</span><br><span class="line">    return this.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const p1 &#x3D; new Person(&#39;tim&#39;, 10)</span><br><span class="line">const p2 &#x3D; new Person(&#39;jak&#39;, 22)</span><br><span class="line">console.log(p1.getName &#x3D;&#x3D;&#x3D; p2.getName) &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/1.png" alt></p>
+<ul>
+<li>在默认情况下，所有原型对象都会自动获得一个constructor(构造函数)属性，这个属性包含一个指向 prototype 属性所在函数的指针。即Person.prototype.constructor指向Person</li>
+<li>每一个new出来的实例，都有一个<strong>proto</strong>属性，该属性指向构造函数的原型对象，通过这个属性，让实例对象也能够访问原型对象上的方法。</li>
+<li>当我们访问实例对象中的属性或者方法时，会优先访问实例对象自身的属性和方法。</li>
+</ul>
+<h3 id="4、原型链"><a href="#4、原型链" class="headerlink" title="4、原型链"></a>4、原型链</h3><p>原型链是利用原型让一个引用类型继承另一个引用类型的属性和方法。简单回顾一下构造函数、原型和实例的关系:每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针。那么，假如我们让原型对象等于另一个类型的实例，结果会怎么样呢?显然，此时的原型对象将包含一个指向另一个原型的指针，相应地，另一个原型中也包含着一个指向另一个构造函数的指针。假如另一个原型又是另一个类型的实例，那么上述关系依然成立，如此层层递进，就构成了实例与原型的链条。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function SuperType() &#123;</span><br><span class="line">    this.property &#x3D; true</span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue &#x3D; function()&#123; </span><br><span class="line">    return this.property</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function SubType() &#123; </span><br><span class="line">    this.subproperty &#x3D; false</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;继承了 SuperType</span><br><span class="line">SubType.prototype &#x3D; new SuperType()</span><br><span class="line">SubType.prototype.getSubValue &#x3D; function() &#123; </span><br><span class="line">    return this.subproperty</span><br><span class="line">&#125;</span><br><span class="line">const instance &#x3D; new SubType()</span><br><span class="line">console.log(instance.getSuperValue())  &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+<p>完整的原型链图如下<br><img src="/2020/08/19/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E5%8E%9F%E5%9E%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E9%93%BE%E3%80%81%E7%BB%A7%E6%89%BF/2.png" alt></p>
+<h3 id="5、继承"><a href="#5、继承" class="headerlink" title="5、继承"></a>5、继承</h3><h4 id="（1）原型链继承"><a href="#（1）原型链继承" class="headerlink" title="（1）原型链继承"></a>（1）原型链继承</h4><p>原型链继承的原理如上，但是用原型链继承也会有问题，如下所示：引用类型的属性被所有实例共享</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function Father() &#123;</span><br><span class="line">    this.colors &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</span><br><span class="line">&#125;</span><br><span class="line">function Son() &#123;&#125;</span><br><span class="line">&#x2F;&#x2F; 继承Father</span><br><span class="line">Son.prototype &#x3D; new Father()</span><br><span class="line"></span><br><span class="line">const son1 &#x3D; new Son()</span><br><span class="line">son1.colors.push(&#39;black&#39;)</span><br><span class="line">console.log(son1.colors)  &#x2F;&#x2F; [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;, &quot;black&quot;]</span><br><span class="line"></span><br><span class="line">const son2 &#x3D; new Son()</span><br><span class="line">console.log(son2.colors)  &#x2F;&#x2F; [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;, &quot;black&quot;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）构造函数继承"><a href="#（2）构造函数继承" class="headerlink" title="（2）构造函数继承"></a>（2）构造函数继承</h4><p>构造函数继承可以避免了引用类型的属性被所有实例共享，还可以在Son中向Father传参</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function Father() &#123;</span><br><span class="line">    this.colors &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</span><br><span class="line">&#125;</span><br><span class="line">function Son() &#123;</span><br><span class="line">    &#x2F;&#x2F; 继承了Father</span><br><span class="line">    Father.call(this)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 继承Father</span><br><span class="line">Son.prototype &#x3D; new Father()</span><br><span class="line"></span><br><span class="line">const son1 &#x3D; new Son()</span><br><span class="line">son1.colors.push(&#39;black&#39;)</span><br><span class="line">console.log(son1.colors)  &#x2F;&#x2F; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;, &#39;black&#39;]</span><br><span class="line"></span><br><span class="line">const son2 &#x3D; new Son()</span><br><span class="line">console.log(son2.colors)  &#x2F;&#x2F; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function Father(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">&#125;</span><br><span class="line">function Son() &#123;</span><br><span class="line">    Father.call(this, &#39;chen&#39;)  &#x2F;&#x2F; 继承了Father,传参</span><br><span class="line">    this.age &#x3D; 29</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 继承Father</span><br><span class="line">Son.prototype &#x3D; new Father()</span><br><span class="line"></span><br><span class="line">const son1 &#x3D; new Son()</span><br><span class="line">console.log(son1.name)  &#x2F;&#x2F; chen</span><br><span class="line">console.log(son1.age)   &#x2F;&#x2F; 29</span><br></pre></td></tr></table></figure>
+<p>构造函数继承的缺点是，方法都在构造函数中定义，每次创建实例都会创建一遍方法。</p>
+<h4 id="（3）组合继承"><a href="#（3）组合继承" class="headerlink" title="（3）组合继承"></a>（3）组合继承</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function Father(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">    this.colors &#x3D; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</span><br><span class="line">&#125;</span><br><span class="line">Father.prototype.sayName &#x3D; function() &#123;</span><br><span class="line">    console.log(this.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Son(name, age) &#123;</span><br><span class="line">    Father.call(this, name) &#x2F;&#x2F; 构造函数继承，，第二次调用Father()</span><br><span class="line">    this.age &#x3D; age</span><br><span class="line">&#125;</span><br><span class="line">Son.prototype &#x3D; new Father()  &#x2F;&#x2F; 原型链继承，第一次调用Father()</span><br><span class="line">Son.prototype.sayAge &#x3D; function() &#123;</span><br><span class="line">    console.log(this.age)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">son1 &#x3D; new Son(&#39;zhang&#39;, 29)</span><br><span class="line">son1.colors.push(&#39;black&#39;)</span><br><span class="line">console.log(son1.colors)  &#x2F;&#x2F; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;, &#39;black&#39;]</span><br><span class="line">son1.sayName()            &#x2F;&#x2F; zhang</span><br><span class="line">son1.sayAge()             &#x2F;&#x2F; 29</span><br><span class="line"></span><br><span class="line">son2 &#x3D; new Son(&#39;chen&#39;, 30)</span><br><span class="line">son2.colors.push(&#39;black1&#39;)</span><br><span class="line">console.log(son2.colors)  &#x2F;&#x2F; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;, &#39;black1&#39;]</span><br><span class="line">son2.sayName()            &#x2F;&#x2F; chen</span><br><span class="line">son2.sayAge()             &#x2F;&#x2F; 30</span><br></pre></td></tr></table></figure>
+<p>融合原型链继承和构造函数的优点，是JavaScript中最常用的继承模式。组合继承的不足是，Father构造函数被调用了两次。</p>
+<h4 id="（4）原型式继承"><a href="#（4）原型式继承" class="headerlink" title="（4）原型式继承"></a>（4）原型式继承</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function createObj(o) &#123;</span><br><span class="line">    function F()&#123;&#125;</span><br><span class="line">    F.prototype &#x3D; o</span><br><span class="line">    return new F()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就是 ES5 Object.create 的模拟实现，将传入的对象作为创建的对象的原型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const person &#x3D; &#123;</span><br><span class="line">    name: &#39;zhang&#39;,</span><br><span class="line">	colors: [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const person1 &#x3D; createObj(person)</span><br><span class="line">const person2 &#x3D; createObj(person)</span><br><span class="line"></span><br><span class="line">person1.name &#x3D; &#39;chen&#39;</span><br><span class="line">console.log(person1.name)  &#x2F;&#x2F; chen</span><br><span class="line">console.log(person2.name)  &#x2F;&#x2F; zhang</span><br><span class="line"></span><br><span class="line">person1.colors.push(&#39;black&#39;)</span><br><span class="line">console.log(person2.colors)  &#x2F;&#x2F; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;, &#39;black&#39;]</span><br></pre></td></tr></table></figure>
+<p>原型式继承的缺点是，包含引用类型的属性值始终都会共享相应的值，这点跟原型链继承一样。</p>
+<h4 id="（5）寄生式继承"><a href="#（5）寄生式继承" class="headerlink" title="（5）寄生式继承"></a>（5）寄生式继承</h4><p>寄生式继承创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后再像真地是它做了所有工作一样返回对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function createObj (o) &#123;</span><br><span class="line">    const clone &#x3D; Object.create(o)</span><br><span class="line">    clone.sayName &#x3D; function () &#123;</span><br><span class="line">        console.log(&#39;hi&#39;)</span><br><span class="line">    &#125;</span><br><span class="line">    return clone</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（6）寄生组合式继承"><a href="#（6）寄生组合式继承" class="headerlink" title="（6）寄生组合式继承"></a>（6）寄生组合式继承</h4><p>寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的混成形式来继承方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function Father(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">&#125;</span><br><span class="line">Father.prototype.getName &#x3D; function() &#123;</span><br><span class="line">    return this.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Son(name, age) &#123;</span><br><span class="line">    Father.call(this, name)  &#x2F;&#x2F; 构造函数继承</span><br><span class="line">    this.age &#x3D; age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 原型继承</span><br><span class="line">Son.prototype &#x3D; Object.create(Father.prototype, &#123;</span><br><span class="line">    &#x2F;&#x2F; 重新指定构造函数</span><br><span class="line">    constructor: &#123;</span><br><span class="line">        value: Son</span><br><span class="line">    &#125;,</span><br><span class="line">    getAge: &#123;</span><br><span class="line">        value: function () &#123;</span><br><span class="line">            return this.age</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这种方式的高效率体现它只调用了一次Father构造函数，并且因此避免了在 Parent.prototype 上面创建不必要的、多余的属性。与此同时，原型链还能保持不变；因此，还能够正常使用 instanceof 和 isPrototypeOf。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。</p>
+<h4 id="（7）ES6中的继承"><a href="#（7）ES6中的继承" class="headerlink" title="（7）ES6中的继承"></a>（7）ES6中的继承</h4><p>Class 可以通过extends关键字实现继承，子类必须在constructor方法中调用super方法，否则新建实例时会报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    constructor (name) &#123;</span><br><span class="line">        this.name &#x3D; name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    getName () &#123;</span><br><span class="line">        return this.name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Student extends Father &#123;</span><br><span class="line">    constructor (name, age) &#123;</span><br><span class="line">        super(name)</span><br><span class="line">        this.age &#x3D; age</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    getAge () &#123;</span><br><span class="line">        return this.age</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/15/js%E5%9F%BA%E7%A1%80%E7%B3%BB%E5%88%97%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E9%97%AD%E5%8C%85/" rel="prev" title="js基础系列（十二）闭包">
+      <i class="fa fa-chevron-left"></i> js基础系列（十二）闭包
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、对象"><span class="nav-number">1.</span> <span class="nav-text">1、对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、工厂模式"><span class="nav-number">2.</span> <span class="nav-text">2、工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、构造函数模式"><span class="nav-number">3.</span> <span class="nav-text">3、构造函数模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、原型模式"><span class="nav-number">4.</span> <span class="nav-text">4、原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、原型链"><span class="nav-number">5.</span> <span class="nav-text">4、原型链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、继承"><span class="nav-number">6.</span> <span class="nav-text">5、继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）原型链继承"><span class="nav-number">6.1.</span> <span class="nav-text">（1）原型链继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）构造函数继承"><span class="nav-number">6.2.</span> <span class="nav-text">（2）构造函数继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）组合继承"><span class="nav-number">6.3.</span> <span class="nav-text">（3）组合继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）原型式继承"><span class="nav-number">6.4.</span> <span class="nav-text">（4）原型式继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（5）寄生式继承"><span class="nav-number">6.5.</span> <span class="nav-text">（5）寄生式继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（6）寄生组合式继承"><span class="nav-number">6.6.</span> <span class="nav-text">（6）寄生组合式继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（7）ES6中的继承"><span class="nav-number">6.7.</span> <span class="nav-text">（7）ES6中的继承</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋进波</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋进波</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
